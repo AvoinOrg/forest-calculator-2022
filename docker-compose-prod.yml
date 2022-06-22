@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  node:
+    container_name: forest-calculator
+    build: .
+    env_file:
+      - .env
+    ports:
+      - "${NODE_PORT}:8080"
+    volumes:
+      - .:/home/node/app:z
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+networks:
+  proxy-net:
+    external: true
