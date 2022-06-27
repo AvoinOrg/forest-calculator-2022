@@ -9,9 +9,6 @@ const serveIndex = require("serve-index");
 
 const {
   getEstate,
-  getMunicipality,
-  getMunicipalityByNatCode,
-  getProvince,
   sendOrder,
 } = require("./data/data.js");
 
@@ -46,48 +43,11 @@ app
       serveIndex(".well-known", { icons: true })
     );
 
-    server.get("/api/kunnat/:id", async (req, res) => {
-      const id = req.params.id;
-
-      const { status: munStatus, resData: munData } = await getMunicipality(id);
-
-      let data = { kunta: munData, maakunta: null };
-
-      if (munStatus === 200) {
-        const { status: proStatus, resData: proData } = await getProvince(
-          munData.MAAKUNTANRO
-        );
-
-        data.maakunta = proData;
-      }
-
-      res.status(munStatus).end(JSON.stringify(data));
-
-      return;
-    });
-
-    server.get("/api/maakunnat/:id", async (req, res) => {
-      const id = req.params.id;
-
-      const { status, resData } = await getProvince(id);
-
-      res.status(status).end(JSON.stringify(resData));
-      return;
-    });
-
-    server.get("/api/kiinteistot/:id", async (req, res) => {
+    server.get("/api/estate/:id", async (req, res) => {
       const id = req.params.id;
 
       const { status: esStatus, resData: esData } = await getEstate(id);
-      const data = { kiinteisto: esData, kunta: null };
-
-      if (esStatus === 200) {
-        const { resData: munData } = await getMunicipalityByNatCode(
-          esData.k_natcode
-        );
-
-        data.kunta = munData;
-      }
+      const data = { kiinteisto: esData };
 
       res.status(esStatus).end(JSON.stringify(data));
       return;
@@ -129,7 +89,7 @@ app
 
       httpsServer.listen(443, (err) => {
         if (err) throw err;
-        console.log("> Https ready on https://localhost:443");
+        console.log("> https ready on https://localhost:443");
       });
     }
 
