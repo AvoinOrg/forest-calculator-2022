@@ -9,45 +9,45 @@ import muns from "../public/kunnat_index.json";
 
 const Home = () => {
   const router = useRouter();
-  const [munValue, setMunValue] = useState("");
-  const [munSuggestions, setMunSuggestions] = useState([]);
+  // const [munValue, setMunValue] = useState("");
+  // const [munSuggestions, setMunSuggestions] = useState([]);
 
   const [estateValue, setEstateValue] = useState("");
   const [estateSuggestions, setEstateSuggestions] = useState([]);
 
   const [blockEnter, setBlockEnter] = useState(false);
 
-  const getMunSuggestions = (value) => {
-    const val = value.trim().toLowerCase();
-    const filteredMuns = muns.filter((mun) =>
-      mun.name.toLowerCase().includes(val)
-    );
+  // const getMunSuggestions = (value) => {
+  //   const val = value.trim().toLowerCase();
+  //   const filteredMuns = muns.filter((mun) =>
+  //     mun.name.toLowerCase().includes(val)
+  //   );
 
-    filteredMuns.sort((a, b) => {
-      const an = a.name.toLowerCase();
-      const bn = b.name.toLowerCase();
+  //   filteredMuns.sort((a, b) => {
+  //     const an = a.name.toLowerCase();
+  //     const bn = b.name.toLowerCase();
 
-      for (let i = 0; i < Math.min(an.length, bn.length, val.length); i++) {
-        if (!(an[i] === bn[i] && an[i] === val[i])) {
-          if (an[i] === val[i]) {
-            return -1;
-          }
+  //     for (let i = 0; i < Math.min(an.length, bn.length, val.length); i++) {
+  //       if (!(an[i] === bn[i] && an[i] === val[i])) {
+  //         if (an[i] === val[i]) {
+  //           return -1;
+  //         }
 
-          if (bn[i] === val[i]) {
-            return 1;
-          }
-        }
-      }
+  //         if (bn[i] === val[i]) {
+  //           return 1;
+  //         }
+  //       }
+  //     }
 
-      if ([an, bn].sort()[0] === an) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
+  //     if ([an, bn].sort()[0] === an) {
+  //       return -1;
+  //     } else {
+  //       return 1;
+  //     }
+  //   });
 
-    return filteredMuns;
-  };
+  //   return filteredMuns;
+  // };
 
   const getEstateSuggestions = (_value) => {
     return [];
@@ -68,24 +68,24 @@ const Home = () => {
     return false;
   };
 
-  const goToMun = () => {
-    if (isValidMun(munValue)) {
-      router.push("/kunnat/" + munValue.trim().toLowerCase());
-    }
-  };
+  // const goToMun = () => {
+  //   if (isValidMun(munValue)) {
+  //     router.push("/kunnat/" + munValue.trim().toLowerCase());
+  //   }
+  // };
 
-  const handleMunClick = (e) => {
-    goToMun();
-  };
+  // const handleMunClick = (e) => {
+  //   goToMun();
+  // };
 
-  const handleMunKeyPress = (e) => {
-    if (e.key.toLowerCase() === "enter" && !blockEnter) {
-      goToMun();
-    }
-  };
+  // const handleMunKeyPress = (e) => {
+  //   if (e.key.toLowerCase() === "enter" && !blockEnter) {
+  //     goToMun();
+  //   }
+  // };
 
   const goToEstate = () => {
-    router.push("/kiinteistot/" + estateValue.trim().toLowerCase());
+    router.push("/estate/" + estateValue.trim().toLowerCase());
   };
 
   const handleEstateClick = (e) => {
