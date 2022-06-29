@@ -4,8 +4,7 @@ import Boiler from "../../components/Boiler";
 import NotFound from "../../components/NotFound";
 import { forestryIndexes, subPages } from "../../utils";
 
-import price_map from "../../public/prices.json";
-import prov_map from "../../public/prov_mun.json";
+const FORESTRIES = ["forestry_2", "forestry_3"];
 
 const Estate = (props) => {
   return (
@@ -17,7 +16,6 @@ const Estate = (props) => {
       {props.data ? (
         <Boiler
           data={props.data}
-          comparisonData={props.comparisonData}
           id={props.id}
           subPage={props.subPage}
           type={props.type}
@@ -50,17 +48,70 @@ const Estate = (props) => {
 //   return realPrices;
 // };
 
+const formatForestry = (forestry, forestArea) => {
+  const formatted = {};
+
+  // sum values together, etc
+  for (const i in forestry) {
+    for (const [key, value] of Object.entries(forestry[i])) {
+      if (key === "area") {
+        continue;
+      }
+
+      if (Number(i) === 0) {
+        formatted[key] = value;
+        continue;
+      }
+
+      if (
+        key.includes("Bio") ||
+        key.includes("Maa") ||
+        key.includes("Sha") ||
+        key.includes("NPV")
+      ) {
+        formatted[key] += forestry[i]["area"] * value;
+        continue;
+      }
+
+      formatted[key] += value;
+    }
+  }
+
+  const total = forestry.length;
+
+  // get averages and stuff
+  for (const [key, value] of Object.entries(formatted)) {
+    if (
+      key.includes("Bio") ||
+      key.includes("Maa") ||
+      key.includes("Sha") ||
+      key.includes("NPV")
+    ) {
+      formatted[key] = value / forestArea;
+      continue;
+    }
+  }
+
+  return formatted;
+};
+
 const formatItemData = (itemData) => {
   const data = {};
-  const forestry_1 = {};
-  const forestry_2 = {};
 
   data["totalArea"] = itemData["total_area"];
+  data["forestArea"] = itemData["forest_area"];
   data["estateIdText"] = itemData["estate_id_text"];
+  data["geometry"] = JSON.parse(itemData["geometry"]);
 
-  for (const i in itemData) {
-    itemData[i];
-  }
+  data["forestry_2"] = formatForestry(
+    itemData["forestry_2"],
+    itemData["forest_area"]
+  );
+
+  data["forestry_3"] = formatForestry(
+    itemData["forestry_3"],
+    itemData["forest_area"]
+  );
 
   return data;
 };
@@ -104,7 +155,7 @@ const formatItemData = (itemData) => {
 //   return data;
 // };
 
-Estate.getInitialProps = async (req) => {
+export const getServerSideProps = async (req) => {
   const id = req.query.slug[0];
   let subPage = null;
   let redirect = false;
@@ -124,17 +175,27 @@ Estate.getInitialProps = async (req) => {
     }
   }
 
-  const res = await fetch(process.env.API_URL + "/estate/" + id);
+  // const res = await fetch(process.env.API_URL + "/estate/" + id);
+  const res = await fetch("http://localhost:3000/api" + "/estate/" + id);
 
   let data = null;
-  let comparisonData = null;
 
   if (res.status === 200) {
     const json = await res.json();
     data = formatItemData(json.estate);
   }
 
-  return { data, comparisonData, subPage, id, type: "estate", redirect };
+  const props = {
+    props: {
+      data,
+      subPage,
+      id,
+      type: "estate",
+      redirect,
+    },
+  };
+
+  return props;
 };
 
 export default Estate;
