@@ -1,16 +1,17 @@
-import styled from "styled-components";
+import styled, { AnyStyledComponent } from "styled-components";
 
 import { Theme } from "../styles";
 
 const DIVIDER = 1000;
 
 interface Props {
-  coords: number[][][];
+  geometry: any;
 }
 
 const MunicipalityOutline = (props: Props) => {
-  const { minX, minY, maxX, maxY } = getMinMaxCoords(props.coords);
-  const coords = parseCoords(props.coords, minX, minY);
+  console.log(props);
+  const { minX, minY, maxX, maxY } = getMinMaxCoords(props.geometry);
+  const coords = parseCoords(props.geometry, minX, minY);
 
   return (
     <Container>
@@ -25,6 +26,8 @@ const MunicipalityOutline = (props: Props) => {
             key={key}
             fill={Theme.color.secondary}
             points={pol}
+            stroke={Theme.color.white}
+            strokeWidth={0.0025}
           />
         ))}
       </svg>
@@ -33,7 +36,7 @@ const MunicipalityOutline = (props: Props) => {
 };
 
 const getMinMaxCoords = (
-  coords: number[][][]
+  geometry: any
 ): { minX: number; minY: number; maxX: number; maxY: number } => {
   let minX = null;
   let minY = null;
@@ -41,7 +44,9 @@ const getMinMaxCoords = (
   let maxX = null;
   let maxY = null;
 
-  const recFind = arr => {
+  const coords: number[][][] = geometry.coordinates;
+
+  const recFind = (arr) => {
     const x = arr[0];
     if (Array.isArray(x)) {
       for (let i = 0; i < arr.length; i++) {
@@ -80,7 +85,8 @@ const getMinMaxCoords = (
   return { minX, minY, maxX, maxY };
 };
 
-const parseCoords = (coords: number[][][], minX, minY): string[] => {
+const parseCoords = (geometry: any, minX, minY): string[] => {
+  const coords: number[][][] = geometry.coordinates;
   const coordStrs = [];
 
   const recFind = (arr): string => {
