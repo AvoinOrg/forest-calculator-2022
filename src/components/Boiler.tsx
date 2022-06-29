@@ -3,15 +3,16 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 import Router from "next/router";
 import Link from "next/link";
+import _ from "lodash";
 
 import { Theme } from "../styles";
 import MunicipalityOutline from "./MunicipalityOutline";
 import StockChart from "./StockChart";
+import LineChart from "./LineChart";
 import {
-  forestryIndexes,
   subTitles,
   navTitles,
-  subTexts,
+  subPages,
   radioVals,
   roundVal,
   getRatio,
@@ -20,7 +21,6 @@ import {
 
 interface Props {
   data: any;
-  comparisonData: any;
   id: string;
   subPage: string;
   type: string;
@@ -32,9 +32,7 @@ const Boiler = (props: Props) => {
   const [isDropdownOpen, setisDropdownOpen] = useState(false);
   const [isLastPage, setIsLastPage] = useState(false);
 
-  const [avgCashHa, setAvgCashHa] = useState(0);
-  const [comparisonAvgCashHa, setComparisonAvgCashHa] = useState(0);
-  const [stockVals, setStockVals] = useState({});
+  const [chartVals, setChartVals] = useState<any>({});
   const [checked, setChecked] = useState({
     radio1: true,
     radio2: false,
@@ -46,26 +44,33 @@ const Boiler = (props: Props) => {
   const [formVal, setFormVal] = useState(props.data.title);
   const [isSending, setIsSending] = useState(false);
 
-  const root = props.type == "estate" ? "/kiinteistot/" : "/kunnat/";
-  const typeName = props.type == "estate" ? "kiinteistö" : "kunta";
-  const stockName = props.type == "estate" ? "Kiinteistön" : "Kunnan";
-  const comparisonStockName = props.type == "estate" ? "Kunnan" : "Maakunnan";
+  const root = "/kiinteisto/";
+  const typeName = "estate";
+  const stockName = "estate";
   const stockColNames = [
-    "2020-2030",
-    "2030-2040",
-    "2040-2050",
-    "2050-2060",
-    "2060-2070",
+    "2022-2032",
+    "2032-2042",
+    "2042-2052",
+    "2052-2062",
+    "2062-2072",
   ];
 
-  const formNameTitle = props.type == "estate" ? "Kiinteistötunnus" : "Kunta";
+  console.log(props.subPage);
+  const formNameTitle = "Kiinteistötunnus";
 
   const dropdownRef = useRef(null);
 
-  const forestryIndex = forestryIndexes[props.subPage];
+  // const forestryIndex = forestryIndexes[props.subPage];
+
+  const handleOrderButtonClick = (e) => {
+    Router.push(root + props.id + "/tilaus");
+  };
 
   const handleArrowClick = (e) => {
-    Router.push(root + props.id + "/tilaus");
+    const spIndex = subPages.indexOf(props.subPage);
+    const spNext = subPages[spIndex + 1];
+
+    Router.push("/kiinteisto/" + props.id + "/" + spNext);
   };
 
   const handleOutsideClick = (e) => {
@@ -136,27 +141,90 @@ const Boiler = (props: Props) => {
       });
     }
 
-    if (props.data.forecastVals[forestryIndex]) {
-      const itemAvgCashHa =
-        props.data.forecastVals[forestryIndex].P1 / props.data.forecastHa / 10;
+    const chartData = {
+      nitrogen: {},
+      phosphorus: {},
+      cash: {},
+      carbon: {},
+      shannon: {},
+    };
 
-      let compAvgCashHa = null;
+    chartData.nitrogen = {
+      2: [
+        props.data.forestry_2.Nku1,
+        props.data.forestry_2.Nku2,
+        props.data.forestry_2.Nku3,
+        props.data.forestry_2.Nku4,
+        props.data.forestry_2.Nku5,
+      ],
+      3: [
+        props.data.forestry_3.Nku1,
+        props.data.forestry_3.Nku2,
+        props.data.forestry_3.Nku3,
+        props.data.forestry_3.Nku4,
+        props.data.forestry_3.Nku5,
+      ],
+    };
 
-      if (props.comparisonData) {
-        compAvgCashHa =
-          props.comparisonData.forecastVals[forestryIndex].P1 /
-          props.comparisonData.forecastHa /
-          10;
-      }
+    chartData.phosphorus = {
+      2: [
+        props.data.forestry_2.Pku1,
+        props.data.forestry_2.Pku2,
+        props.data.forestry_2.Pku3,
+        props.data.forestry_2.Pku4,
+        props.data.forestry_2.Pku5,
+      ],
+      3: [
+        props.data.forestry_3.Pku1,
+        props.data.forestry_3.Pku2,
+        props.data.forestry_3.Pku3,
+        props.data.forestry_3.Pku4,
+        props.data.forestry_3.Pku5,
+      ],
+    };
 
-      const stocks = {
-        item: Object.values(props.data.forecastVals[forestryIndex]),
-      };
+    chartData.carbon = {
+      2: [
+        props.data.forestry_2.Bio0 + props.data.forestry_2.Maa0,
+        props.data.forestry_2.Bio1 + props.data.forestry_2.Maa1,
+        props.data.forestry_2.Bio2 + props.data.forestry_2.Maa2,
+        props.data.forestry_2.Bio3 + props.data.forestry_2.Maa3,
+        props.data.forestry_2.Bio4 + props.data.forestry_2.Maa4,
+        props.data.forestry_2.Bio5 + props.data.forestry_2.Maa5,
+      ],
+      3: [
+        props.data.forestry_3.Bio0 + props.data.forestry_3.Maa0,
+        props.data.forestry_3.Bio1 + props.data.forestry_3.Maa1,
+        props.data.forestry_3.Bio2 + props.data.forestry_3.Maa2,
+        props.data.forestry_3.Bio3 + props.data.forestry_3.Maa3,
+        props.data.forestry_3.Bio4 + props.data.forestry_3.Maa4,
+        props.data.forestry_3.Bio5 + props.data.forestry_3.Maa5,
+      ],
+    };
 
-      setAvgCashHa(itemAvgCashHa);
-      setComparisonAvgCashHa(compAvgCashHa);
-      setStockVals(stocks);
-    }
+    chartData.shannon = {
+      2: [
+        props.data.forestry_2.Sha1,
+        props.data.forestry_2.Sha2,
+        props.data.forestry_2.Sha3,
+        props.data.forestry_2.Sha4,
+        props.data.forestry_2.Sha5,
+      ],
+      3: [
+        props.data.forestry_3.Sha1,
+        props.data.forestry_3.Sha2,
+        props.data.forestry_3.Sha3,
+        props.data.forestry_3.Sha4,
+        props.data.forestry_3.Sha5,
+      ],
+    };
+
+    chartData.cash = {
+      2: [props.data.forestry_2.NPV3],
+      3: [props.data.forestry_3.NPV3],
+    };
+
+    setChartVals(chartData);
 
     document.addEventListener("mousedown", handleOutsideClick);
 
@@ -171,7 +239,7 @@ const Boiler = (props: Props) => {
     if (props.subPage === "tilaus") {
       setIsLastPage(true);
     } else {
-      setIsLastPage(false)
+      setIsLastPage(false);
     }
   });
 
@@ -185,52 +253,74 @@ const Boiler = (props: Props) => {
                 <Link href={"/"}>
                   <LogoContainer>
                     <Logo />
-                    <LogoTextContainer>
-                      <LogoText>Metsälaskuri</LogoText>
+                    {/* <LogoTextContainer>
+                      <LogoText>Silvan Metsälaskuri</LogoText>
                       <LogoTitle />
-                    </LogoTextContainer>
+                    </LogoTextContainer> */}
                   </LogoContainer>
                 </Link>
                 <MunOutlineContainer>
-                  <MunicipalityOutline coords={props.data.coordinates} />
+                  <MunicipalityOutline geometry={props.data.geometry} />
                 </MunOutlineContainer>
                 {!isLastPage ? (
                   <>
-                    {/* <HumanContainer>
-                      <HumanIcon />
-                      <HumanText>
-                        {"X " + addThousandSpaces(roundVal(co2ekv / 10.3, 0))}
-                      </HumanText>
-                    </HumanContainer> */}
-                    {/* <BalanceRow>
-                      <BalanceCircleSmall>
-                        <BalanceTextSmall>Tila</BalanceTextSmall>
-                        <BalanceValueSmall>
-                          {Math.round(co2ekvHa * 10) / 10}
-                        </BalanceValueSmall>
-                        <BalanceUnitSmall>
-                          CO<sub>2</sub> / ha
-                        </BalanceUnitSmall>
-                      </BalanceCircleSmall>
-                      <BalanceCircle>
-                        <BalanceText>Kunta</BalanceText>
-                        <BalanceValue>-&nbsp;</BalanceValue>
-                        <BalanceUnit>
-                          CO<sub>2</sub> / ha
-                        </BalanceUnit>
-                      </BalanceCircle>
-                    </BalanceRow> */}
-                    <StockContainer>
-                      <StockTitle>Nettotulot kausittain</StockTitle>
-                      <StockChart data={stockVals} colNames={stockColNames} />
-                    </StockContainer>
+                    {props.subPage === "vesistovaikutukset" && (
+                      <>
+                        <BalanceRow>
+                          <ChartContainer>
+                            <ChartTitle>Typpi</ChartTitle>
+                            <LineChart
+                              data={chartVals.nitrogen}
+                              colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
+                              unit={"t"}
+                            />
+                          </ChartContainer>
+                          <ChartContainer>
+                            <ChartTitle>Fosfori</ChartTitle>
+                            <LineChart
+                              data={chartVals.phosphorus}
+                              colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
+                              unit={"t"}
+                            />
+                          </ChartContainer>
+                        </BalanceRow>
+                      </>
+                    )}
+                    {props.subPage === "talous" && (
+                      <>
+                        <BalanceRow>
+                          <ChartContainer>
+                            <ChartTitle>Nettotulojen nykyarvo</ChartTitle>
+                            <StockChart
+                              data={chartVals.cash}
+                              colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
+                              unit={"€"}
+                            />
+                          </ChartContainer>
+                        </BalanceRow>
+                      </>
+                    )}
+                    {props.subPage === "hiilivarasto" && (
+                      <>
+                        <BalanceRow>
+                          <ChartContainer>
+                            <ChartTitle>Hiilivarasto</ChartTitle>
+                            <LineChart
+                              data={chartVals.carbon}
+                              colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
+                              unit={"t"}
+                            />
+                          </ChartContainer>
+                        </BalanceRow>
+                      </>
+                    )}
                   </>
                 ) : (
                   <>
                     <ExampleContainer>
                       <Example />
                     </ExampleContainer>
-                    {/* <StockContainer>
+                    {/* <GraphContainer>
                       <StockChart
                         data={{
                           item: {
@@ -240,7 +330,7 @@ const Boiler = (props: Props) => {
                         }}
                         colNames={stockColNames}
                       />
-                    </StockContainer> */}
+                    </GraphContainer> */}
                   </>
                 )}
               </GraphContainer>
@@ -253,16 +343,13 @@ const Boiler = (props: Props) => {
                     <AvoinLink>
                       <AvoinLogo />
                     </AvoinLink>
-                    <Title>{props.data.title}</Title>
+                    <Title>{props.data.estateIdText}</Title>
                     <InfoTextContainer>
                       <InfoTextRowFirst>
                         <InfoTextKey>Pinta-ala:&nbsp;&nbsp;</InfoTextKey>
                         <InfoTextValue>
                           {addThousandSpaces(
-                            roundVal(
-                              props.data.areaHa,
-                              props.type === "estate" ? 2 : 0
-                            )
+                            roundVal(props.data.totalArea, 2)
                           ) + "ha"}
                         </InfoTextValue>
                       </InfoTextRowFirst>
@@ -270,14 +357,11 @@ const Boiler = (props: Props) => {
                         <InfoTextKey>Metsää:&nbsp;&nbsp;</InfoTextKey>
                         <InfoTextValue>
                           {addThousandSpaces(
-                            roundVal(
-                              props.data.forestHa,
-                              props.type === "estate" ? 2 : 0
-                            )
+                            roundVal(props.data.forestArea, 2)
                           ) + "ha"}
                         </InfoTextValue>
                       </InfoTextRow>
-                      <InfoTextRow>
+                      {/* <InfoTextRow>
                         <InfoTextKey>
                           Laskennan kattavuus:&nbsp;&nbsp;
                         </InfoTextKey>
@@ -290,8 +374,15 @@ const Boiler = (props: Props) => {
                             1
                           ) + "%"}
                         </InfoTextValue>
-                      </InfoTextRow>
+                      </InfoTextRow> */}
                     </InfoTextContainer>
+                    <OrderButton onClick={handleOrderButtonClick}>
+                      <OrderButtonInner>
+                        <OrderButtonText>
+                          Tilaa metsäsuunnitelma
+                        </OrderButtonText>
+                      </OrderButtonInner>
+                    </OrderButton>
                   </BackgroundContainer>
                 </TopContainer>
                 <BottomContainer>
@@ -301,9 +392,9 @@ const Boiler = (props: Props) => {
                   <BackgroundContainer>
                     <ContentContainer>
                       <ForestryDropdownTitle></ForestryDropdownTitle>
-                      {/* <ForestryDropdown ref={dropdownRef}>
+                      <ForestryDropdown ref={dropdownRef}>
                         <ForestryDropdownSelected
-                          onClick={e => {
+                          onClick={(e) => {
                             setisDropdownOpen(!isDropdownOpen);
                           }}
                         >
@@ -317,101 +408,270 @@ const Boiler = (props: Props) => {
                           )}
                         </ForestryDropdownSelected>
                         <ForestryDropdownItems isOpen={isDropdownOpen}>
-                          {props.subPage !== "tavanomainen_metsänhoito" && (
-                            <Link
-                              href={
-                                root + props.id + "/tavanomainen_metsänhoito"
-                              }
-                            >
-                              <ForestryLink>
-                                Tavanomainen metsänhoito
+                          {props.subPage !== "vesistovaikutukset" && (
+                            <Link href={root + props.id}>
+                              <ForestryLink
+                                onClick={(e) => {
+                                  setisDropdownOpen(false);
+                                }}
+                              >
+                                Vesistövaikutukset
                               </ForestryLink>
                             </Link>
                           )}
-                          {props.subPage !== "pidennetty_kiertoaika" && (
-                            <Link
-                              href={root + props.id + "/pidennetty_kiertoaika"}
-                            >
-                              <ForestryLink>Pidennetty kiertoaika</ForestryLink>
+                          {props.subPage !== "talous" && (
+                            <Link href={root + props.id + "/talous"}>
+                              <ForestryLink
+                                onClick={(e) => {
+                                  setisDropdownOpen(false);
+                                }}
+                              >
+                                Talous
+                              </ForestryLink>
+                            </Link>
+                          )}
+                          {props.subPage !== "hiilivarasto" && (
+                            <Link href={root + props.id + "/hiilivarasto"}>
+                              <ForestryLink
+                                onClick={(e) => {
+                                  setisDropdownOpen(false);
+                                }}
+                              >
+                                Hiilivarasto
+                              </ForestryLink>
+                            </Link>
+                          )}
+                          {props.subPage !== "monimuotoisuus" && (
+                            <Link href={root + props.id + "/monimuotoisuus"}>
+                              <ForestryLink
+                                onClick={(e) => {
+                                  setisDropdownOpen(false);
+                                }}
+                              >
+                                Monimuotoisuus
+                              </ForestryLink>
                             </Link>
                           )}
                           {!isLastPage && (
                             <Link href={root + props.id + "/tilaus"}>
-                              <ForestryLink>Hiililaskelma</ForestryLink>
+                              <ForestryLink
+                                onClick={(e) => {
+                                  setisDropdownOpen(false);
+                                }}
+                              >
+                                Hiililaskelma
+                              </ForestryLink>
                             </Link>
                           )}
                         </ForestryDropdownItems>
-                      </ForestryDropdown> */}
+                      </ForestryDropdown>
                       {!isLastPage ? (
                         <>
-                          <ExplanationContainer>
-                            <ExplanationHeader>
-                              Kausittaiset hakkuutulot
-                            </ExplanationHeader>
-                            <ExplanationText>
-                              Hakkuutulot on esitetty kootusti kymmenen vuoden
-                              välein. Hakkuut toteutuvat kun metsä on
-                              uudistuskypsää tai harvennuksen tarpeessa.
-                              Uudistushakkuun jälkeen metsä uudistetaan
-                              viljelemällä suositusten mukaisesti.
-                            </ExplanationText>
-                            <ExplanationText>
-                              Hakkuiden nettotulot antavat hyvän yleiskuvan
-                              siitä minkälainen tulovirta metsätilalta on
-                              odotettavissa lyhyellä ja pitkällä aikavälillä.
-                              Metsäsuunnitelman tilaamalla voit vaikuttaa
-                              valittuun metsänhoitotapaan ja toimenpiteiden
-                              ajankohtaan.
-                            </ExplanationText>
-                          </ExplanationContainer>
-                          <ExplanationContainer>
-                            <ExplanationHeader>
-                              {subTitles[props.subPage]}
-                            </ExplanationHeader>
-                            <ExplanationText>
-                              {subTexts[props.subPage]}
-                            </ExplanationText>
-                            <ExplanationText>
-                              Valitun tilan hakkuut on simuloitu tavanomaisen
-                              metsänhoitotavan mukaisesti. Hakkuutuloista on
-                              vähennetty uudistamis- ja metsänhoitokulut.
-                              Laskenta perustuu avoimeen metsävaratietoon ja
-                              hinnoittelussa on käytetty alueellisia
-                              keskimääräisiä hintoja.
-                            </ExplanationText>
-                          </ExplanationContainer>
-                          <ExplanationContainer>
-                            <ExplanationHeader>
-                              Metsän tuotto keskimäärin:
-                            </ExplanationHeader>
-                            <ExplanationInfoRow>
-                              <ExplanationInfoKey>
-                                Valitun metsätilan vuotuiset nettotulot 10v
-                                aikana:&nbsp;&nbsp;
-                              </ExplanationInfoKey>
-                              <ExplanationInfoValue>
-                                {addThousandSpaces(roundVal(avgCashHa, 0)) +
-                                  "€ / ha"}
-                              </ExplanationInfoValue>
-                            </ExplanationInfoRow>
-                            {/* <ExplanationInfoRow>
-                              <ExplanationInfoKey>
-                                Kunnan metsien keskimääräinen bruttotulo 10v
-                                aikana:&nbsp;&nbsp;
-                              </ExplanationInfoKey>
-                              <ExplanationInfoValue>
-                                {props.comparisonData
-                                  ? addThousandSpaces(
-                                      roundVal(comparisonAvgCashHa, 0)
-                                    ) + "€ / ha"
-                                  : "tulossa pian"}
-                              </ExplanationInfoValue>
-                            </ExplanationInfoRow> */}
-                          </ExplanationContainer>
+                          {props.subPage === "vesistovaikutukset" && (
+                            <>
+                              <ExplanationContainer>
+                                <ExplanationText>
+                                  Metsän hakkuut aiheuttavat vesistöjä
+                                  rehevöittäviä ravinnevalumia vesistöihin.
+                                  Rehevöittävä vaikutus riippuu hakkuun
+                                  voimakkuudesta. Tärkeimmät ravinteet ovat
+                                  typpi ja fosfori.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jaksollinen metsänkäsittely aiheuttaa tällä
+                                  kiinteistöllä 50 vuoden aikana{" "}
+                                  <b>
+                                    {_.round(_.sum(chartVals.nitrogen[3]), 2)}{" "}
+                                    tonnin{" "}
+                                  </b>{" "}
+                                  typpikuormituksen ja{" "}
+                                  <b>
+                                    {_.round(_.sum(chartVals.phosphorus[3]), 2)}{" "}
+                                    tonnin{" "}
+                                  </b>{" "}
+                                  fosforikuormituksen.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jatkuvapeitteinen metsänkäsittely aiheuttaa
+                                  tällä kiinteistöllä 50 vuoden aikana{" "}
+                                  <b>
+                                    {_.round(_.sum(chartVals.nitrogen[2]), 2)}{" "}
+                                    tonnin{" "}
+                                  </b>{" "}
+                                  typpikuormituksen ja{" "}
+                                  <b>
+                                    {_.round(_.sum(chartVals.phosphorus[2]), 2)}{" "}
+                                    tonnin{" "}
+                                  </b>{" "}
+                                  fosforikuormituksen.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jatkuvapeitteinen metsänkäsittely aiheuttaa
+                                  typpikuormitusta{" "}
+                                  <b>
+                                    {_.round(
+                                      _.sum(chartVals.nitrogen[3]) -
+                                        _.sum(chartVals.nitrogen[2]),
+                                      2
+                                    )}{" "}
+                                    t (
+                                    {_.round(
+                                      ((_.sum(chartVals.nitrogen[3]) -
+                                        _.sum(chartVals.nitrogen[2])) /
+                                        _.sum(chartVals.nitrogen[3])) *
+                                        100,
+                                      0
+                                    )}{" "}
+                                    %)
+                                  </b>{" "}
+                                  ja fosforikuormitusta{" "}
+                                  <b>
+                                    {_.round(
+                                      _.sum(chartVals.phosphorus[3]) -
+                                        _.sum(chartVals.phosphorus[2]),
+                                      2
+                                    )}{" "}
+                                    t (
+                                    {_.round(
+                                      ((_.sum(chartVals.phosphorus[3]) -
+                                        _.sum(chartVals.phosphorus[2])) /
+                                        _.sum(chartVals.phosphorus[3])) *
+                                        100,
+                                      0
+                                    )}{" "}
+                                    %){" "}
+                                  </b>
+                                  vähemmän kuin jaksollinen
+                                </ExplanationText>
+                              </ExplanationContainer>
+                            </>
+                          )}
+
+                          {props.subPage === "talous" && (
+                            <>
+                              <ExplanationContainer>
+                                <ExplanationText>
+                                  Metsänomistamisen kannattavuutta kuvaa
+                                  parhaiten nettotulojen nykyarvo. Se sisältää
+                                  kaikki metsänhoidon kulut ja puun myynnin
+                                  tulot nykypäivän arvossa. Nykyarvon
+                                  laskennassa on käytetty 3 prosentin
+                                  laskennallista korkokantaa.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Metsän arvo jaksollisella metsänkäsittelyllä
+                                  on{" "}
+                                  <b>{_.round(chartVals.cash[3], 0)} € / ha </b>
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Metsän arvo jatkuvapeitteisellä
+                                  metsänkäsittelyllä on{" "}
+                                  <b>{_.round(chartVals.cash[2], 0)} € / ha </b>
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Puun myynnin lisäksi metsä voi tuottaa myös
+                                  muita taloudellisia hyötyjä.
+                                  {/* Katso tästä esimerkki. */}
+                                </ExplanationText>
+                              </ExplanationContainer>
+                            </>
+                          )}
+
+                          {props.subPage === "hiilivarasto" && (
+                            <>
+                              <ExplanationContainer>
+                                <ExplanationText>
+                                  Kun hiilivarasto kasvaa, metsä sitoo
+                                  ilmakehästä enemmän hiiltä kuin se päästää
+                                  (nettonielu). Kun hiilivarasto vähenee, metsä
+                                  päästää ilmakehään hiiltä enemmän kuin sitoo
+                                  (nettolähde). Hiilivaraston kasvu hillitsee
+                                  ilmastonmuutosta.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jaksollisella metsänkäsittelyllä hiilivarasto
+                                  on seuraavan 50 vuoden aikana keskimäärin{" "}
+                                  <b>
+                                    {_.round(_.mean(chartVals.carbon[3]), 1)}{" "}
+                                    tonnia
+                                  </b>{" "}
+                                  hiiltä
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jatkuvapeitteisellä metsänkäsittelyllä
+                                  hiilivarasto on seuraavan 50 vuoden aikana
+                                  keskimäärin{" "}
+                                  <b>
+                                    {_.round(_.mean(chartVals.carbon[2]), 1)}{" "}
+                                    tonnia
+                                  </b>{" "}
+                                  hiiltä
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jatkuvapeitteisen metsänkäsittelyn
+                                  hiilivarasto on siis{" "}
+                                  <b>
+                                    {_.round(
+                                      _.mean(chartVals.carbon[2]) -
+                                        _.mean(chartVals.carbon[3]),
+                                      1
+                                    )}{" "}
+                                    tonnia (
+                                    {_.round(
+                                      ((_.mean(chartVals.carbon[2]) -
+                                        _.mean(chartVals.carbon[3])) /
+                                        _.mean(chartVals.carbon[3])) *
+                                        100,
+                                      1
+                                    )}{" "}
+                                    %)
+                                  </b>{" "}
+                                  suurempi kuin jaksollisessa. Tämä vastaa noin{" "}
+                                  <b>
+                                    {_.round(
+                                      (_.mean(chartVals.carbon[2]) -
+                                        _.mean(chartVals.carbon[3])) /
+                                        10.3,
+                                      1
+                                    )}
+                                  </b>{" "}
+                                  keskivertosuomalaisen ilmastopäästöjä.
+                                </ExplanationText>
+                              </ExplanationContainer>
+                            </>
+                          )}
+
+                          {props.subPage === "monimuotoisuus" && (
+                            <>
+                              <ExplanationContainer>
+                                <ExplanationText>
+                                  Metsät ovat tärkein uhanalaisten lajien
+                                  elinympäristö. Uhanalaistumista aiheuttaa
+                                  eniten metsien intensiivinen käyttö, jonka
+                                  vuoksi vanhat metsät, isot puut ja lahopuu
+                                  ovat vähentyneet.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jaksollisessa metsänkäsittelyssä
+                                  uudistushakkuu tehdään useimmiten avohakkuuna,
+                                  joka sekoittaa koko metsäekosysteemin.
+                                  Jatkuvan kasvatuksen hakkuu on luonnon
+                                  monimuotoisuuden kannalta vähemmän
+                                  haitallinen. Jatkuvan kasvatuksen metsä säilyy
+                                  peitteisenä ja näin tarjoaa jatkuvasti ruokaa
+                                  ja suojaa monille metsälajeille.
+                                </ExplanationText>
+                              </ExplanationContainer>
+                            </>
+                          )}
+
                           <Arrow onClick={handleArrowClick}>
                             <ArrowTail>
-                              <ArrowText>Tilaa metsäsuunnitelma</ArrowText>
+                              {/* <ArrowText>
+                              &nbsp;&nbsp;
+                              </ArrowText> */}
                             </ArrowTail>
+                            <ArrowPoint />
                           </Arrow>
                         </>
                       ) : (
@@ -564,13 +824,13 @@ const Overlay: any = styled.div`
   flex: 1;
   flex-direction: row;
   z-index: 1;
-  background: rgba(49, 66, 52, 0.95);
+  background: rgba(110, 160, 140, 0.95);
 `;
 
 const MunOutlineContainer: any = styled.div`
   height: 220px;
   width: 300px;
-  margin: 3rem 0 0 0;
+  margin: 0 0 0 0;
   display: flex;
   justify-content: flex-end;
 `;
@@ -654,20 +914,20 @@ const HumanContainer: any = styled.div`
   align-items: center;
 `;
 
-const HumanIcon: any = styled.img.attrs(() => ({
-  src: require("../public/img/human.svg"),
-}))`
-  height: 14rem;
-`;
+// const HumanIcon: any = styled.img.attrs(() => ({
+//   src: require("../public/img/human.svg"),
+// }))`
+//   height: 14rem;
+// `;
 
-const HumanText: any = styled.p`
-  font-family: ${Theme.font.secondary};
-  color: ${Theme.color.white};
-  font-size: 5rem;
-  margin: 1rem 0 0 -3.5rem;
-`;
+// const HumanText: any = styled.p`
+//   font-family: ${Theme.font.secondary};
+//   color: ${Theme.color.white};
+//   font-size: 5rem;
+//   margin: 1rem 0 0 -3.5rem;
+// `;
 
-const StockTitle: any = styled.p`
+const ChartTitle: any = styled.p`
   font-family: ${Theme.font.secondary};
   color: ${Theme.color.white};
   font-size: 2rem;
@@ -676,7 +936,7 @@ const StockTitle: any = styled.p`
   text-align: center;
 `;
 
-const StockContainer: any = styled.div`
+const ChartContainer: any = styled.div`
   height: 400px;
   width: 480px;
   margin: 150px 40px 0 0;
@@ -819,7 +1079,7 @@ const ForestryDropdownTitle: any = styled.p`
   padding: 2rem 0 0.7rem 0;
 `;
 
-const ForestryLink: any = styled.p`
+const ForestryLink: any = styled("p")`
   margin: 0;
   padding: 0.5rem 0.7rem 0.5rem 0.7rem;
   &:hover {
@@ -969,11 +1229,39 @@ const Title: any = styled.p`
   font-weight: 500;
 `;
 
+const OrderButton: any = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 2rem 14px 0 0;
+`;
+
+const OrderButtonInner: any = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: ${Theme.color.primary};
+  height: 70px;
+  width: 100%;
+  max-width: 35rem;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const OrderButtonText: any = styled.div`
+  color: ${Theme.color.white};
+  z-index: 2;
+  text-align: center;
+  font-size: 1.6rem;
+`;
+
 const Arrow: any = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0;
+  justify-content: flex-end;
+  margin: 0 10px 0 0;
 `;
 
 const ArrowTail: any = styled.div`
@@ -981,15 +1269,16 @@ const ArrowTail: any = styled.div`
   flex-direction: column;
   justify-content: center;
   background: ${Theme.color.primary};
-  height: 70px;
-  width: 100%;
+  height: 30px;
+  padding: 5px 0 5px 10px;
+  width: 60px;
   &:hover {
     cursor: pointer;
   }
 `;
 
 const ArrowText: any = styled.div`
-  color: ${Theme.color.white};
+  color: ${Theme.color.secondaryLight};
   z-index: 2;
   text-align: center;
   font-size: 1.6rem;
@@ -998,10 +1287,10 @@ const ArrowText: any = styled.div`
 const ArrowPoint: any = styled.div`
   width: 0;
   height: 0;
-  border-top: 60px solid transparent;
-  border-bottom: 60px solid transparent;
-  border-left: 60px solid ${Theme.color.primary};
-  margin: 0 0 0 -20px;
+  border-top: 40px solid transparent;
+  border-bottom: 40px solid transparent;
+  border-left: 50px solid ${Theme.color.primary};
+  margin: 0 0 0 -10px;
   &:hover {
     cursor: pointer;
   }
@@ -1068,9 +1357,9 @@ const LogoTextContainer: any = styled.div`
 `;
 
 const Logo: any = styled.img.attrs(() => ({
-  src: require("../public/img/kapy.svg"),
+  src: require("../public/img/silva-white.png"),
 }))`
-  height: 3rem;
+  height: 9rem;
   margin: 0 0.6rem -5px 0;
 `;
 
@@ -1101,7 +1390,7 @@ const AvoinLogo: any = styled.img.attrs(() => ({
   src: require("../public/img/avoin-black.svg"),
 }))`
   width: 13rem;
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
   overflow: hidden;
