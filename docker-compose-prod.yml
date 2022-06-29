@@ -8,12 +8,8 @@ services:
       - .env
     ports:
       - "${NODE_PORT}:3000"
+      - "${NODE_PORT_HTTPS}:3001"
     volumes:
       - .:/home/node/app:z
-    networks:
-      - proxy-net
     restart: unless-stopped
 
-networks:
-  proxy-net:
-    external: true

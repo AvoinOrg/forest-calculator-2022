@@ -2,8 +2,10 @@ FROM node:16
 
 ENV NODE_ENV=${NODE_ENV}
 ENV PORT 3000
+ENV PORT 3001
 
 EXPOSE 3000
+EXPOSE 3001
 
 RUN mkdir -p /home/node/app/node_modules
 WORKDIR /home/node/app

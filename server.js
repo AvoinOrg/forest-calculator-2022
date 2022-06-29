@@ -7,16 +7,14 @@ const http = require("http");
 const https = require("https");
 const serveIndex = require("serve-index");
 
-const {
-  getEstate,
-  sendOrder,
-} = require("./data/data.js");
+const { getEstate, sendOrder } = require("./data/data.js");
 
 require("dotenv").config();
 
 const dev = process.env.NODE_ENV !== "production";
 const useHttps = process.env.HTTPS === "TRUE";
-const port = !dev ? 80 : 3000;
+const port = 3000;
+const httpsPort = 3001;
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
@@ -87,9 +85,9 @@ app
 
       const httpsServer = https.createServer(credentials, server);
 
-      httpsServer.listen(443, (err) => {
+      httpsServer.listen(httpsPort, (err) => {
         if (err) throw err;
-        console.log("> https ready on https://localhost:443");
+        console.log("> https ready on https://localhost:" + httpsPort);
       });
     }
 
