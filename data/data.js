@@ -66,24 +66,25 @@ const formatEstateId = (id) => {
   return id_parts.join("");
 };
 
-const formatData = (data) => {
+const formatData = (data, forestryData) => {
   // loop through data object and select columns and forestries
   const data_formatted = {};
-  data_formatted["geometry"] = data[0].geometry;
+  data_formatted["geometry"] = data[0].geometry_json;
   data_formatted["estate_id_text"] = data[0].estate_id_text;
+  data_formatted["total_area"] = data[0].total_area / 10000; // square meters to hectares
 
   for (const i in FORESTRIES) {
     data_formatted[FORESTRIES[i]] = [];
   }
 
-  let totalArea = 0;
+  let forestArea = 0;
 
-  for (const i in data) {
-    const area = data[i].area;
-    totalArea += area;
+  for (const i in forestryData) {
+    const area = Number(forestryData[i].area);
+    forestArea += Number(area);
 
     for (const j in FORESTRIES) {
-      const f = data[i][FORESTRIES[j]];
+      const f = forestryData[i][FORESTRIES[j]];
       const new_f = { area: area };
 
       for (const k in COLS) {
@@ -94,7 +95,7 @@ const formatData = (data) => {
     }
   }
 
-  data_formatted["total_area"] = totalArea;
+  data_formatted["forest_area"] = forestArea;
   return data_formatted;
 };
 
@@ -115,20 +116,40 @@ const getEstate = async (id) => {
   const formId = formatEstateId(id);
 
   try {
-    const { rows } = await pool.query(
-      `
-        SELECT estate_id_text, estate_id, f.area, f.forestry_1, f.forestry_2, f.forestry_3, f.forestry_4, e.geometry
+    const res = await Promise.all([
+      pool.query(
+        ` 
+        SELECT f.area, f.forestry_1, f.forestry_2, f.forestry_3, 
+          f.forestry_4
         FROM 
-            (SELECT * FROM estate WHERE estate_id = $1) as e
+            (SELECT 
+              geometry
+            FROM estate WHERE estate_id = $1) 
+            AS e
         LEFT JOIN
             forest_parcel f
-        ON ST_INTERSECTS(e.geometry, f.geometry);
+        ON 
+          ST_INTERSECTS(e.geometry, f.geometry)
+        AND
+          ST_WITHIN(ST_POINTONSURFACE(f.geometry), e.geometry)
       `,
-      [formId]
-    );
+        [formId]
+      ),
+      pool.query(
+        `
+        SELECT
+            estate_id_text, estate_id,
+            ST_AREA(ST_ASGEOJSON(ST_UNION(geometry))) as total_area,
+            ST_ASGEOJSON(ST_UNION(geometry)) as geometry_json
+        FROM estate WHERE estate_id = $1 
+        GROUP BY estate_id_text, estate_id;
+        `,
+        [formId]
+      ),
+    ]);
 
-    if (rows.length > 0) {
-      const data = formatData(rows);
+    if (res[0].rows.length > 0) {
+      const data = formatData(res[1].rows, res[0].rows);
       return parseRes(200, data);
     } else {
       return parseRes(404, null);
