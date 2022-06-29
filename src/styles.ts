@@ -3,14 +3,14 @@ import { createGlobalStyle, css } from "styled-components";
 // try coolors.co
 export const Theme: any = {
   color: {
-    primary: "rgb(49, 66, 52)",
-    primaryLight: "#97A89A",
-    secondary: "rgb(187, 160, 69)",
-    secondaryLight: "#DDCFA2",
+    primary: "#2E714D",
+    primaryLight: "#B8E2CC",
+    secondary: "#005F76",
+    secondaryLight: "#C9D6F5",
     brown: "rgb(76, 65, 61)",
     beige: "rgb(219, 209, 201)",
     red: "rgb(164, 71, 72)",
-    white: "rgb(245,245,245)"
+    white: "#F4FEFE"
   },
   font: {
     primary: "Museo Sans",
