@@ -3,7 +3,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Theme } from "../styles";
 
-const getOptions = (data, colNames): Highcharts.Options => {
+const getOptions = (data, colNames, unit): Highcharts.Options => {
   return {
     title: {
       text: "",
@@ -14,7 +14,8 @@ const getOptions = (data, colNames): Highcharts.Options => {
       labels: {
         style: {
           color: Theme.color.white,
-          opacity: 0.6,
+          opacity: 0.9,
+          fontSize: "0.9rem",
         },
       },
       lineColor: "rgba(221, 207, 162, 0.1)",
@@ -28,15 +29,15 @@ const getOptions = (data, colNames): Highcharts.Options => {
           opacity: 0.6,
         },
       },
-      gridLineColor: "rgba(221, 207, 162, 0.3)",
+      gridLineColor: "rgba(221, 207, 162, 0.4)",
       lineColor: Theme.color.white,
       labels: {
         style: {
           color: Theme.color.white,
-          opacity: 0.6,
+          opacity: 0.8,
         },
         formatter: function() {
-          return "" + this.value + " €";
+          return "" + this.value + " " + unit;
         },
       },
     },
@@ -66,6 +67,8 @@ const getOptions = (data, colNames): Highcharts.Options => {
         dataLabels: {
           enabled: false,
         },
+        colorByPoint: true,
+        colors: [Theme.color.secondary, Theme.color.red],
       },
     },
 
@@ -84,7 +87,7 @@ const getOptions = (data, colNames): Highcharts.Options => {
         type: "column",
         showInLegend: false,
         legendIndex: 0,
-        data: data.item,
+        data: [data[3], data[2]],
         borderWidth: 0,
         color: Theme.color.secondary,
       },
@@ -92,16 +95,12 @@ const getOptions = (data, colNames): Highcharts.Options => {
   };
 };
 
-const StockChart = (props: { data; colNames }) => {
-  const shownData = {
-    item: props.data.item,
-  };
-
+const StockChart = (props: { data; colNames; unit }) => {
   return (
     <div>
       <HighchartsReact
         highcharts={Highcharts}
-        options={getOptions(shownData, props.colNames)}
+        options={getOptions(props.data, props.colNames, props.unit)}
       />
     </div>
   );
