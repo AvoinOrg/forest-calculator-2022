@@ -85,7 +85,7 @@ const Home = () => {
   // };
 
   const goToEstate = () => {
-    router.push("/estate/" + estateValue.trim().toLowerCase());
+    router.push("/kiinteisto/" + estateValue.trim().toLowerCase());
   };
 
   const handleEstateClick = (e) => {
@@ -115,24 +115,14 @@ const Home = () => {
           <LogoContainer>
             <Logo />
             <LogoTextContainer>
-              <LogoText>Metsälaskuri</LogoText>
-              <LogoTitle />
+              <LogoText>Silvan Metsälaskuri</LogoText>
+              {/* <LogoTitle /> */}
             </LogoTextContainer>
           </LogoContainer>
           {/* <WaveContainer>
             <Wave></Wave>
           </WaveContainer> */}
           <LowerContainer>
-            <InfoTextContainer>
-              <InfoTextBorder />
-              <InfoTextRow>
-                <InfoText>
-                  Metsälaskuri kertoo metsäkiinteistön nettotulot tulevina
-                  vuosikymmeninä. Syötä metsätilan kiinteistötunnus hakukenttään
-                  ja tutustu palveluun.
-                </InfoText>
-              </InfoTextRow>
-            </InfoTextContainer>
             <SearchContainer onKeyPress={handleEstateKeyPress}>
               <AutoSuggest
                 suggestions={estateSuggestions}
@@ -164,6 +154,16 @@ const Home = () => {
                 <SearchIcon />
               </SearchIconContainer>
             </SearchContainer>
+            <InfoTextContainer>
+              <InfoTextBorder />
+              <InfoTextRow>
+                <InfoText>
+                  Syötä laskuriin kiinteistötunnus ja saat tietoa metsäsi eri
+                  käsittelytapojen vaikutuksista vesistöihin, kannattavuuteen,
+                  ilmastoon ja luonnon monimuotoisuuteen.
+                </InfoText>
+              </InfoTextRow>
+            </InfoTextContainer>
             {/* <SearchContainer onKeyPress={handleMunKeyPress}>
               <AutoSuggest
                 suggestions={munSuggestions}
@@ -216,14 +216,14 @@ const Overlay: any = styled.div`
   flex: 1;
   flex-direction: column;
   align-items: center;
-  background: rgba(49, 66, 52, 0.9);
+  background: rgba(110, 160, 140, 0.95);
   padding: 10px;
 `;
 
 const SearchContainer: any = styled.div`
   display: flex;
   justify-content: center;
-  margin: 3rem 0 0 0;
+  margin: 3rem 0 0rem 0;
   width: 28.2rem;
   font-family: ${Theme.font.primary};
   max-width: 100%;
@@ -258,8 +258,10 @@ const SearchIcon: any = styled.img.attrs(() => ({
 
 const LogoContainer: any = styled.div`
   display: flex;
-  margin: 8rem auto 8rem auto;
+  margin: 5rem auto 1.5rem auto;
   justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
   @media only screen and (max-height: 850px) {
     margin: 4rem auto 3rem auto;
   }
@@ -275,10 +277,10 @@ const LogoTextContainer: any = styled.div`
 `;
 
 const Logo: any = styled.img.attrs(() => ({
-  src: require("../public/img/kapy.svg"),
+  src: require("../public/img/silva-white.png"),
 }))`
   height: 8rem;
-  margin: 0 1rem 0 0;
+  margin: 0 0 1.5rem 0;
 
   @media only screen and (max-width: 436px) {
     height: 5rem;
@@ -332,8 +334,10 @@ const InfoTextContainer: any = styled.div`
   z-index: 2;
   display: flex;
   justify-content: center;
-  max-width: 60rem;
+  text-align: center;
+  max-width: 800px;
   flex-direction: row;
+  margin: 40px 0 0 0;
 `;
 
 const InfoTextRow: any = styled.div`
