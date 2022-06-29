@@ -47,7 +47,7 @@ app
       const id = req.params.id;
 
       const { status: esStatus, resData: esData } = await getEstate(id);
-      const data = { kiinteisto: esData };
+      const data = { estate: esData };
 
       res.status(esStatus).end(JSON.stringify(data));
       return;
