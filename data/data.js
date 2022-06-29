@@ -162,8 +162,9 @@ const getEstate = async (id) => {
 
 const sendOrder = async (data) => {
   date = Date.now();
-  pool.query(
-    `
+  try {
+    const res = await pool.query(
+      `
       INSERT INTO 
         customer_order(
           id,
@@ -184,40 +185,37 @@ const sendOrder = async (data) => {
         $7
       )
     `,
-    [
-      v4(),
-      date,
-      data.name,
-      data.email,
-      data.areaId,
-      data.areaType,
-      data.orderType,
-    ],
-    (err) => {
-      if (err) {
-        console.log(err);
-        return 500;
-      } else {
-        transporter
-          .sendMail({
-            from: `"Uusi tilaus - Metsälaskuri" <${forestUser}>`,
-            to: nmEmail,
-            subject: "Uusi tilaus: " + data.areaId,
-            text: `
+      [
+        v4(),
+        date,
+        data.name,
+        data.email,
+        data.areaId,
+        data.areaType,
+        data.orderType,
+      ]
+    );
+
+    transporter
+      .sendMail({
+        from: `"Uusi tilaus - Silvan Metsälaskuri" <${nmUser}>`,
+        to: nmEmail,
+        subject: "Uusi tilaus: " + data.areaId,
+        text: `
               Nimi: ${data.name}
               Email: ${data.email}
-              Alueen tyyppi: ${data.areaType}
-              Alueen nimi/tunnus: ${data.areaId}
+              Kiinteistötunnus: ${data.areaId}
               Tilauksen tyyppi: ${data.orderType}
               Ajankohta: ${new Date(date)}
             `,
-          })
-          .then((result) => console.log(result))
-          .catch((error) => console.error(error));
-        return 200;
-      }
-    }
-  );
+      })
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+    return 200;
+  } catch (err) {
+    console.log(err);
+    return 500;
+  }
 };
 
 module.exports = { getEstate, sendOrder };

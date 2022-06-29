@@ -41,21 +41,12 @@ const Boiler = (props: Props) => {
 
   const [formName, setFormName] = useState("");
   const [formEmail, setFormEmail] = useState("");
-  const [formVal, setFormVal] = useState(props.data.title);
+  const [formVal, setFormVal] = useState(props.data.estateIdText);
   const [isSending, setIsSending] = useState(false);
 
   const root = "/kiinteisto/";
   const typeName = "estate";
-  const stockName = "estate";
-  const stockColNames = [
-    "2022-2032",
-    "2032-2042",
-    "2042-2052",
-    "2052-2062",
-    "2062-2072",
-  ];
 
-  console.log(props.subPage);
   const formNameTitle = "Kiinteistötunnus";
 
   const dropdownRef = useRef(null);

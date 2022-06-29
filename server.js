@@ -53,9 +53,10 @@ app
 
     server.post("/api/tilaus", async (req, res) => {
       data = req.body;
-      const { status, resData } = await sendOrder(data);
+      const status = await sendOrder(data);
 
-      res.status(status).end(JSON.stringify(resData));
+      console.log(status)
+      res.status(status).end();
       return;
     });
 

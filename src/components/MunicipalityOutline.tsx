@@ -9,7 +9,6 @@ interface Props {
 }
 
 const MunicipalityOutline = (props: Props) => {
-  console.log(props);
   const { minX, minY, maxX, maxY } = getMinMaxCoords(props.geometry);
   const coords = parseCoords(props.geometry, minX, minY);
 
