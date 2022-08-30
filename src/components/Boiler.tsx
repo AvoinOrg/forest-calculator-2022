@@ -263,6 +263,7 @@ const Boiler = (props: Props) => {
                             <LineChart
                               data={chartVals.nitrogen}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
+                              xNames={["10v", "20v", "30v", "40v", "50v"]}
                               unit={"t"}
                             />
                           </ChartContainerNarrow>
@@ -271,6 +272,7 @@ const Boiler = (props: Props) => {
                             <LineChart
                               data={chartVals.phosphorus}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
+                              xNames={["10v", "20v", "30v", "40v", "50v"]}
                               unit={"t"}
                             />
                           </ChartContainerNarrow>
@@ -299,6 +301,7 @@ const Boiler = (props: Props) => {
                             <LineChart
                               data={chartVals.carbon}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
+                              xNames={["0v", "10v", "20 v", "30v", "40v", "50v"]}
                               unit={"t"}
                             />
                           </ChartContainer>
@@ -308,9 +311,9 @@ const Boiler = (props: Props) => {
                   </>
                 ) : (
                   <>
-                    <ExampleContainer>
+                    {/* <ExampleContainer>
                       <Example />
-                    </ExampleContainer>
+                    </ExampleContainer> */}
                     {/* <GraphContainer>
                       <StockChart
                         data={{
@@ -600,7 +603,8 @@ const Boiler = (props: Props) => {
                                 </ExplanationText>
                                 <ExplanationText>
                                   Jatkuvapeitteisen metsänkäsittelyn
-                                  hiilivarasto on siis{" "}
+                                  hiilivarasto on siis seuraavan 50 vuoden
+                                  aikana keskimäärin{" "}
                                   <b>
                                     {_.round(
                                       _.mean(chartVals.carbon[2]) -
@@ -626,7 +630,8 @@ const Boiler = (props: Props) => {
                                       1
                                     )}
                                   </b>{" "}
-                                  keskivertosuomalaisen ilmastopäästöjä.
+                                  keskivertosuomalaisen ilmastopäästöjä 50
+                                  vuoden aikana.
                                 </ExplanationText>
                               </ExplanationContainer>
                             </>
@@ -672,13 +677,37 @@ const Boiler = (props: Props) => {
                               {subTitles[props.subPage]}
                             </ExplanationHeader>
                             <ExplanationText>
-                              Metsänhoitotavalla voit vaikuttaa tuleviin
-                              tuloihin. Tilaamalla metsäsuunitelman määrität
-                              metsänhoitotavan tavoitteidesi mukaisesti.
-                              Metsänhoitosuunnitelman mukaan voit tiedustella
-                              myös hiililaskelmaa.
+                              Voit pyytää tarjouksen jatkuvaan kasvatukseen
+                              perustuvasta metsäsuunnitelmasta seuraavilta
+                              tahoilta:
+                              <ul>
+                                <li>
+                                  Arvometsä{" "}
+                                  <a href="https://arvometsa.fi/">
+                                    https://arvometsa.fi/
+                                  </a>
+                                </li>
+                                <li>
+                                  Innofor{" "}
+                                  <a href="https://innofor.fi/">
+                                    https://innofor.fi/{" "}
+                                  </a>
+                                </li>
+                                <li>
+                                  Metsätietopalvelu Silmu{" "}
+                                  <a href="https://metsatietosilmu.fi/">
+                                    https://metsatietosilmu.fi/
+                                  </a>
+                                </li>
+                                <li>
+                                  Metsäsuunnittelu Hollanti{" "}
+                                  <a href="https://www.msh.fi/">
+                                    https://www.msh.fi/
+                                  </a>
+                                </li>
+                              </ul>
                             </ExplanationText>
-                            <PayInfoCol>
+                            {/* <PayInfoCol>
                               <PayInfoRow>
                                 <PayInfoRadio
                                   type="radio"
@@ -735,9 +764,9 @@ const Boiler = (props: Props) => {
                                   </PayInfoValsCol>
                                 )}
                               </PayInfoRow>
-                            </PayInfoCol>
+                            </PayInfoCol> */}
                           </ExplanationContainer>
-                          <Form>
+                          {/* <Form>
                             <FormLabel>Sähköpostiosoite</FormLabel>
                             <FormInput
                               type="text"
@@ -769,7 +798,7 @@ const Boiler = (props: Props) => {
                               tarkoituksiin tai luovuteta kolmansille
                               osapuolille.
                             </FormText>
-                          </Form>
+                          </Form> */}
                         </>
                       )}
                     </ContentContainer>

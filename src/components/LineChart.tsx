@@ -3,15 +3,15 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { Theme } from "../styles";
 
-const getOptions = (data, colNames, unit): Highcharts.Options => {
+const getOptions = (data, colNames, xNames, unit): Highcharts.Options => {
   return {
     title: {
       text: "",
     },
 
     xAxis: {
-      visible: false,
-      categories: colNames,
+      visible: true,
+      categories: xNames,
       labels: {
         style: {
           color: Theme.color.white,
@@ -108,12 +108,17 @@ const getOptions = (data, colNames, unit): Highcharts.Options => {
   };
 };
 
-const LineChart = (props: { data; colNames; unit }) => {
+const LineChart = (props: { data; colNames; xNames; unit }) => {
   return (
     <div>
       <HighchartsReact
         highcharts={Highcharts}
-        options={getOptions(props.data, props.colNames, props.unit)}
+        options={getOptions(
+          props.data,
+          props.colNames,
+          props.xNames,
+          props.unit
+        )}
       />
     </div>
   );
