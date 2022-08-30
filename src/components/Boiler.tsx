@@ -64,6 +64,13 @@ const Boiler = (props: Props) => {
     Router.push("/kiinteisto/" + props.id + "/" + spNext);
   };
 
+  const handleArrowBackClick = (e) => {
+    const spIndex = subPages.indexOf(props.subPage);
+    const spPrev = subPages[spIndex - 1];
+
+    Router.push("/kiinteisto/" + props.id + "/" + spPrev);
+  };
+
   const handleOutsideClick = (e) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
       setisDropdownOpen(false);
@@ -673,14 +680,27 @@ const Boiler = (props: Props) => {
                             </>
                           )}
 
-                          <Arrow onClick={handleArrowClick}>
-                            <ArrowTail>
-                              {/* <ArrowText>
+                          <ArrowRow>
+                            {props.subPage !== "vesistovaikutukset" && (
+                              <ArrowBack onClick={handleArrowBackClick}>
+                                <ArrowBackPoint />
+                                <ArrowBackTail>
+                                  {/* <ArrowText>
+                              &nbsp;&nbsp;
+                            </ArrowText> */}
+                                </ArrowBackTail>
+                              </ArrowBack>
+                            )}
+
+                            <Arrow onClick={handleArrowClick}>
+                              <ArrowTail>
+                                {/* <ArrowText>
                               &nbsp;&nbsp;
                               </ArrowText> */}
-                            </ArrowTail>
-                            <ArrowPoint />
-                          </Arrow>
+                              </ArrowTail>
+                              <ArrowPoint />
+                            </Arrow>
+                          </ArrowRow>
                         </>
                       ) : (
                         <>
@@ -719,6 +739,16 @@ const Boiler = (props: Props) => {
                                 </li>
                               </ul>
                             </ExplanationText>
+                            <ArrowRow>
+                              <ArrowBack onClick={handleArrowBackClick}>
+                                <ArrowBackPoint />
+                                <ArrowBackTail>
+                                  {/* <ArrowText>
+                              &nbsp;&nbsp;
+                              </ArrowText> */}
+                                </ArrowBackTail>
+                              </ArrowBack>
+                            </ArrowRow>
                             {/* <PayInfoCol>
                               <PayInfoRow>
                                 <PayInfoRadio
@@ -1322,12 +1352,21 @@ const OrderButtonText: any = styled.div`
   font-size: 1.6rem;
 `;
 
+const ArrowRow: any = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 10px 0 0;
+`;
+
 const Arrow: any = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  margin: 0 10px 0 0;
+  margin: 0 10px 0 auto;
+  width: 100px;
 `;
 
 const ArrowTail: any = styled.div`
@@ -1357,6 +1396,39 @@ const ArrowPoint: any = styled.div`
   border-bottom: 40px solid transparent;
   border-left: 50px solid ${Theme.color.primary};
   margin: 0 0 0 -10px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const ArrowBack: any = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 0 auto 0 0;
+  width: 100px;
+`;
+
+const ArrowBackTail: any = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: ${Theme.color.primary};
+  height: 30px;
+  padding: 5px 0 5px 10px;
+  width: 60px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const ArrowBackPoint: any = styled.div`
+  width: 0;
+  height: 0;
+  border-top: 40px solid transparent;
+  border-bottom: 40px solid transparent;
+  border-right: 50px solid ${Theme.color.primary};
+  margin: 0 -10px 0 0;
   &:hover {
     cursor: pointer;
   }
