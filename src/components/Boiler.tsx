@@ -258,22 +258,22 @@ const Boiler = (props: Props) => {
                     {props.subPage === "vesistovaikutukset" && (
                       <>
                         <BalanceRow>
-                          <ChartContainer>
+                          <ChartContainerNarrow>
                             <ChartTitle>Typpi</ChartTitle>
                             <LineChart
                               data={chartVals.nitrogen}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
                               unit={"t"}
                             />
-                          </ChartContainer>
-                          <ChartContainer>
+                          </ChartContainerNarrow>
+                          <ChartContainerNarrow>
                             <ChartTitle>Fosfori</ChartTitle>
                             <LineChart
                               data={chartVals.phosphorus}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
                               unit={"t"}
                             />
-                          </ChartContainer>
+                          </ChartContainerNarrow>
                         </BalanceRow>
                       </>
                     )}
@@ -932,6 +932,22 @@ const ChartContainer: any = styled.div`
   width: 480px;
   margin: 150px 40px 0 0;
   padding: 0 0 0 40px;
+`;
+
+const ChartContainerNarrow: any = styled.div`
+  height: 400px;
+  width: 480px;
+  margin: 150px 40px 0 0;
+  padding: 0 0 0 40px;
+  @media only screen and (max-width: 1330px) {
+    width: 300px;
+    margin: 150px 10px 0 0;
+  }
+
+  @media only screen and (max-width: 1330px) {
+    width: 220px;
+    margin: 150px 10px 0 0;
+  }
 `;
 
 const ExampleContainer: any = styled.div`
