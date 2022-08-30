@@ -367,13 +367,13 @@ const Boiler = (props: Props) => {
                         </InfoTextValue>
                       </InfoTextRow> */}
                     </InfoTextContainer>
-                    <OrderButton onClick={handleOrderButtonClick}>
+                    {/* <OrderButton onClick={handleOrderButtonClick}>
                       <OrderButtonInner>
                         <OrderButtonText>
                           Tilaa metsäsuunnitelma
                         </OrderButtonText>
                       </OrderButtonInner>
-                    </OrderButton>
+                    </OrderButton> */}
                   </BackgroundContainer>
                 </TopContainer>
                 <BottomContainer>
