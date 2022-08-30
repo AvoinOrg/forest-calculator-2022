@@ -301,12 +301,24 @@ const Boiler = (props: Props) => {
                             <LineChart
                               data={chartVals.carbon}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
-                              xNames={["0v", "10v", "20 v", "30v", "40v", "50v"]}
+                              xNames={[
+                                "0v",
+                                "10v",
+                                "20 v",
+                                "30v",
+                                "40v",
+                                "50v",
+                              ]}
                               unit={"t"}
                             />
                           </ChartContainer>
                         </BalanceRow>
                       </>
+                    )}
+                    {props.subPage === "monimuotoisuus" && (
+                      <DiversityImageContainer>
+                        <DiversityImage />
+                      </DiversityImageContainer>
                     )}
                   </>
                 ) : (
@@ -979,21 +991,40 @@ const ChartContainerNarrow: any = styled.div`
   }
 `;
 
-const ExampleContainer: any = styled.div`
-  margin: 60px -20px 0 0;
+// const ExampleContainer: any = styled.div`
+//   margin: 60px -20px 0 0;
+//   display: flex;
+//   flex: 1;
+//   @media only screen and (max-width: 1330px) {
+//     margin: 140px -20px 0 0;
+//   }
+// `;
+
+// const Example: any = styled.img.attrs(() => ({
+//   src: require("../public/img/example.png"),
+// }))`
+//   height: 900px;
+//   @media only screen and (max-width: 1330px) {
+//     height: 545px;
+//   }
+// `;
+
+const DiversityImageContainer: any = styled.div`
+  margin: 60px 40px 0 0;
   display: flex;
   flex: 1;
-  @media only screen and (max-width: 1330px) {
-    margin: 140px -20px 0 0;
+  @media only screen and (max-width: 1530px) {
+    margin: 140px 20px 0 0;
   }
 `;
 
-const Example: any = styled.img.attrs(() => ({
-  src: require("../public/img/example.png"),
+const DiversityImage: any = styled.img.attrs(() => ({
+  src: require("../public/img/diversity.png"),
 }))`
-  height: 900px;
-  @media only screen and (max-width: 1330px) {
-    height: 545px;
+  height: 450px;
+  border: solid 2px ${Theme.color.white};
+  @media only screen and (max-width: 1530px) {
+    height: 300px;
   }
 `;
 
