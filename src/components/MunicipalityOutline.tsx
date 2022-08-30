@@ -26,7 +26,7 @@ const MunicipalityOutline = (props: Props) => {
             fill={Theme.color.secondary}
             points={pol}
             stroke={Theme.color.white}
-            strokeWidth={0.0025}
+            strokeWidth={0.0045}
           />
         ))}
       </svg>
