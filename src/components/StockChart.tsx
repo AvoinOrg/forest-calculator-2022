@@ -68,7 +68,7 @@ const getOptions = (data, colNames, unit): Highcharts.Options => {
           enabled: false,
         },
         colorByPoint: true,
-        colors: [Theme.color.secondary, Theme.color.red],
+        colors: [Theme.color.secondaryLight, Theme.color.red],
       },
     },
 
@@ -89,7 +89,7 @@ const getOptions = (data, colNames, unit): Highcharts.Options => {
         legendIndex: 0,
         data: [data[3], data[2]],
         borderWidth: 0,
-        color: Theme.color.secondary,
+        color: Theme.color.secondaryLight,
       },
     ],
   };

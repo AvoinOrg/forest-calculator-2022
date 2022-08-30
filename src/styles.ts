@@ -3,19 +3,19 @@ import { createGlobalStyle, css } from "styled-components";
 // try coolors.co
 export const Theme: any = {
   color: {
-    primary: "#2E714D",
+    primary: "#333333",
     primaryLight: "#B8E2CC",
-    secondary: "#005F76",
-    secondaryLight: "#C9D6F5",
+    secondaryLight: "#005F76",
+    secondary: "#006400",
     brown: "rgb(76, 65, 61)",
     beige: "rgb(219, 209, 201)",
-    red: "rgb(164, 71, 72)",
-    white: "#F4FEFE"
+    red: "#a0d470",
+    white: "#FFFFFF",
   },
   font: {
     primary: "Museo Sans",
-    secondary: "EngschriftDIND"
-  }
+    secondary: "EngschriftDIND",
+  },
 };
 
 export const GlobalStyle: any = createGlobalStyle`

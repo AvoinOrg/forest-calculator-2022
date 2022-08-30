@@ -92,7 +92,7 @@ const getOptions = (data, colNames, unit): Highcharts.Options => {
         showInLegend: true,
         legendIndex: 0,
         borderWidth: 0,
-        color: Theme.color.secondary,
+        color: Theme.color.secondaryLight,
         data: data[3],
       },
       {
