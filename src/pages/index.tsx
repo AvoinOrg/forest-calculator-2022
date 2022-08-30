@@ -101,7 +101,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>Arvometsä Metsälaskuri</title>
+        <title>Silvan metsälaskuri</title>
         <meta
           name="viewport"
           content="height=device-height; width=device-width"
@@ -115,7 +115,7 @@ const Home = () => {
           <LogoContainer>
             <Logo />
             <LogoTextContainer>
-              <LogoText>Silvan Metsälaskuri</LogoText>
+              <LogoText>Silvan metsälaskuri</LogoText>
               {/* <LogoTitle /> */}
             </LogoTextContainer>
           </LogoContainer>
