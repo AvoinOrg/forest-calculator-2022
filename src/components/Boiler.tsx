@@ -271,7 +271,7 @@ const Boiler = (props: Props) => {
                               data={chartVals.nitrogen}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
                               xNames={["10v", "20v", "30v", "40v", "50v"]}
-                              unit={"t"}
+                              unit={"kg"}
                             />
                           </ChartContainerNarrow>
                           <ChartContainerNarrow>
@@ -280,7 +280,7 @@ const Boiler = (props: Props) => {
                               data={chartVals.phosphorus}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
                               xNames={["10v", "20v", "30v", "40v", "50v"]}
-                              unit={"t"}
+                              unit={"kg"}
                             />
                           </ChartContainerNarrow>
                         </BalanceRow>
@@ -495,12 +495,12 @@ const Boiler = (props: Props) => {
                                   kiinteistöllä 50 vuoden aikana{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.nitrogen[3]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   typpikuormituksen ja{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.phosphorus[3]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   fosforikuormituksen.
                                 </ExplanationText>
@@ -509,12 +509,12 @@ const Boiler = (props: Props) => {
                                   tällä kiinteistöllä 50 vuoden aikana{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.nitrogen[2]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   typpikuormituksen ja{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.phosphorus[2]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   fosforikuormituksen.
                                 </ExplanationText>
