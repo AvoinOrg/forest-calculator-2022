@@ -422,7 +422,7 @@ const Boiler = (props: Props) => {
                         </ForestryDropdownSelected>
                         <ForestryDropdownItems isOpen={isDropdownOpen}>
                           {props.subPage !== "vesistovaikutukset" && (
-                            <Link href={root + props.id}>
+                            <Link href="/[root]/[id]" as={root + props.id}>
                               <ForestryLink
                                 onClick={(e) => {
                                   setisDropdownOpen(false);
@@ -527,7 +527,7 @@ const Boiler = (props: Props) => {
                                         _.sum(chartVals.nitrogen[2]),
                                       2
                                     )}{" "}
-                                    t (
+                                    kg (
                                     {_.round(
                                       ((_.sum(chartVals.nitrogen[3]) -
                                         _.sum(chartVals.nitrogen[2])) /
@@ -544,7 +544,7 @@ const Boiler = (props: Props) => {
                                         _.sum(chartVals.phosphorus[2]),
                                       2
                                     )}{" "}
-                                    t (
+                                    kg (
                                     {_.round(
                                       ((_.sum(chartVals.phosphorus[3]) -
                                         _.sum(chartVals.phosphorus[2])) /
