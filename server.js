@@ -55,7 +55,7 @@ app
       data = req.body;
       const status = await sendOrder(data);
 
-      console.log(status)
+      console.log(status);
       res.status(status).end();
       return;
     });
