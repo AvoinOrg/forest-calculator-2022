@@ -97,6 +97,10 @@ const formatData = (data, forestryData) => {
     }
   }
 
+  if (forestArea === 0) {
+    return null;
+  }
+
   data_formatted["forest_area"] = forestArea;
   return data_formatted;
 };
@@ -152,6 +156,9 @@ const getEstate = async (id) => {
 
     if (res[0].rows.length > 0) {
       const data = formatData(res[1].rows, res[0].rows);
+      if (data === null) {
+        return parseRes(204, null);
+      }
       return parseRes(200, data);
     } else {
       return parseRes(404, null);
