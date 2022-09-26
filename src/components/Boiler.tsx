@@ -620,13 +620,12 @@ const Boiler = (props: Props) => {
                                 </ExplanationText>
                                 <ExplanationText>
                                   Jatkuvapeitteisellä metsänkäsittelyllä
-                                  hiilivarasto on seuraavan 50 vuoden aikana
                                   keskimäärin{" "}
                                   <b>
                                     {_.round(_.mean(chartVals.carbon[2]), 1)}{" "}
                                     tonnia
                                   </b>{" "}
-                                  hiiltä
+                                  hiiltä.
                                 </ExplanationText>
                                 <ExplanationText>
                                   Jatkuvapeitteisen metsänkäsittelyn
@@ -659,6 +658,10 @@ const Boiler = (props: Props) => {
                                   </b>{" "}
                                   keskivertosuomalaisen ilmastopäästöjä 50
                                   vuoden aikana.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jos luku on negatiivinen, hiilivarasto on
+                                  jaksollisella metsänkäsittelyllä suurempi.
                                 </ExplanationText>
                                 <ExplanationText>
                                   Hiilivaraston laskennassa huomioidaan puuston
