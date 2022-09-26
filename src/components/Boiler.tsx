@@ -751,6 +751,11 @@ const Boiler = (props: Props) => {
                                 </li>
                               </ul>
                             </ExplanationText>
+                            <ExplanationText>
+                              Jos jatkuvapeitteinen metsänkäsittely vähentäisi
+                              selvästi vesistövaikutuksia sinun kiinteistölläsi,
+                              voit saada metsäsuunnitelman puoleen hintaan.
+                            </ExplanationText>
                             <ArrowRow>
                               <ArrowBack onClick={handleArrowBackClick}>
                                 <ArrowBackPoint />
