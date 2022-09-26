@@ -472,7 +472,7 @@ const Boiler = (props: Props) => {
                                   setisDropdownOpen(false);
                                 }}
                               >
-                                Hiililaskelma
+                                Metsäsuunnitelma
                               </ForestryLink>
                             </Link>
                           )}
