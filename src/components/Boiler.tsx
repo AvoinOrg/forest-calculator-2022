@@ -568,10 +568,16 @@ const Boiler = (props: Props) => {
                                 <ExplanationText>
                                   Metsänomistamisen kannattavuutta kuvaa
                                   parhaiten nettotulojen nykyarvo. Se sisältää
-                                  kaikki metsänhoidon kulut ja puun myynnin
-                                  tulot nykypäivän arvossa. Nykyarvon
-                                  laskennassa on käytetty 3 prosentin
-                                  laskennallista korkokantaa.
+                                  kaikki tulevat metsänhoidon kulut ja puun
+                                  myynnin tulot nykypäivän arvossa. Nettotulojen
+                                  nykyarvo kuvaa metsän arvoa tästä hetkestä
+                                  ikuisuuteen. Mitä kauempana tulevaisuudessa
+                                  tulo tapahtuu, sitä pienempi sen arvo on nyt.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jatkuvapeitteinen metsänkäsittely antaa
+                                  tyypillisesti tasaisemman tuoton kuin
+                                  jaksollinen.
                                 </ExplanationText>
                                 <ExplanationText>
                                   Metsän arvo jaksollisella metsänkäsittelyllä
@@ -653,6 +659,10 @@ const Boiler = (props: Props) => {
                                   </b>{" "}
                                   keskivertosuomalaisen ilmastopäästöjä 50
                                   vuoden aikana.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Hiilivaraston laskennassa huomioidaan puuston
+                                  ja maaperän sisältämä hiili.
                                 </ExplanationText>
                               </ExplanationContainer>
                             </>
