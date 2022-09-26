@@ -15,7 +15,6 @@ import {
   subPages,
   radioVals,
   roundVal,
-  getRatio,
   addThousandSpaces,
 } from "../utils";
 
