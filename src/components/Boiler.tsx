@@ -553,9 +553,12 @@ const Boiler = (props: Props) => {
                                     )}{" "}
                                     %){" "}
                                   </b>
-                                  vähemmän kuin jaksollinen. Jos vähenemä on
-                                  typen osalta yli 10 kg/ha/50 vuotta, voit olla
-                                  oikeutettu subventoituun metsäsuunnitelmaan.
+                                  vähemmän kuin jaksollinen.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jos vähenemä on typen osalta yli 10 kg/ha/50
+                                  vuotta, voit olla oikeutettu subventoituun
+                                  metsäsuunnitelmaan.
                                 </ExplanationText>
                               </ExplanationContainer>
                             </>
