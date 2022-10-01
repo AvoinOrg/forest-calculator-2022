@@ -736,33 +736,27 @@ const Boiler = (props: Props) => {
                               Voit pyytää tarjouksen jatkuvaan kasvatukseen
                               perustuvasta metsäsuunnitelmasta seuraavilta
                               tahoilta:
-                              <ul>
-                                <li>
-                                  Arvometsä{" "}
-                                  <a href="https://arvometsa.fi/">
-                                    https://arvometsa.fi/
-                                  </a>
-                                </li>
-                                <li>
-                                  Innofor{" "}
-                                  <a href="https://innofor.fi/">
-                                    https://innofor.fi/{" "}
-                                  </a>
-                                </li>
-                                <li>
-                                  Metsätietopalvelu Silmu{" "}
-                                  <a href="https://metsatietosilmu.fi/">
-                                    https://metsatietosilmu.fi/
-                                  </a>
-                                </li>
-                                <li>
-                                  Metsäsuunnittelu Hollanti{" "}
-                                  <a href="https://www.msh.fi/">
-                                    https://www.msh.fi/
-                                  </a>
-                                </li>
-                              </ul>
                             </ExplanationText>
+                            <ForestryLogoContainer>
+                              <ForestryLogoRow>
+                                <ForestryLogoLink href="https://arvometsa.fi/palvelu/metsasuunnittelu/">
+                                  <ForestryLogoArvometsa />
+                                </ForestryLogoLink>
+
+                                <ForestryLogoLink href="https://innofor.fi/">
+                                  <ForestryLogoInnofor />
+                                </ForestryLogoLink>
+                              </ForestryLogoRow>
+                              <ForestryLogoRow>
+                                <ForestryLogoLink href="https://metsatietosilmu.fi/">
+                                  <ForestryLogoSilmu />
+                                </ForestryLogoLink>
+                                <ForestryLogoLink href="https://www.msh.fi/">
+                                  <ForestryLogoHollanti />
+                                </ForestryLogoLink>
+                              </ForestryLogoRow>
+                              <ForestryLogoRow></ForestryLogoRow>
+                            </ForestryLogoContainer>
                             <ExplanationText>
                               Jos jatkuvapeitteinen metsänkäsittely vähentäisi
                               selvästi vesistövaikutuksia sinun kiinteistölläsi,
@@ -1389,6 +1383,62 @@ const OrderButtonText: any = styled.div`
   z-index: 2;
   text-align: center;
   font-size: 1.6rem;
+`;
+
+const ForestryLogoContainer: any = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ForestryLogoRow: any = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 20px 0 0 0;
+  @media only screen and (max-width: 1330px) {
+    flex-direction: column;
+  }
+`;
+
+const ForestryLogoLink: any = styled.a`
+  @media only screen and (max-width: 1330px) {
+    flex-direction: column;
+    width: 200px;
+  }
+`;
+
+const ForestryLogoArvometsa: any = styled.img.attrs(() => ({
+  src: require("../public/img/arvometsa.png"),
+}))`
+  height: 160px;
+  margin: 0 0 0 -35px;
+`;
+
+const ForestryLogoInnofor: any = styled.img.attrs(() => ({
+  src: require("../public/img/innofor.jpg"),
+}))`
+  height: 120px;
+  margin: 15px 0 0 0;
+`;
+
+const ForestryLogoSilmu: any = styled.img.attrs(() => ({
+  src: require("../public/img/silmu.jpg"),
+}))`
+  height: 130px;
+  margin: 0 0 0 0;
+  @media only screen and (max-width: 1330px) {
+    margin: 25px 0 0 0;
+  }
+`;
+
+const ForestryLogoHollanti: any = styled.img.attrs(() => ({
+  src: require("../public/img/hollanti.jpg"),
+}))`
+  height: 100px;
+  margin: 0 0 0 30px;
+
+  @media only screen and (max-width: 1330px) {
+    margin: 45px 0 10px 0;
+  }
 `;
 
 const ArrowRow: any = styled.div`
