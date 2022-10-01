@@ -577,23 +577,20 @@ const Boiler = (props: Props) => {
                                   tulo tapahtuu, sitä pienempi sen arvo on nyt.
                                 </ExplanationText>
                                 <ExplanationText>
-                                  Jatkuvapeitteinen metsänkäsittely antaa
-                                  tyypillisesti tasaisemman tuoton kuin
-                                  jaksollinen.
-                                </ExplanationText>
-                                <ExplanationText>
                                   Metsän arvo jaksollisella metsänkäsittelyllä
                                   on{" "}
-                                  <b>{_.round(chartVals.cash[3], 0)} € / ha </b>
+                                  <b>{_.round(chartVals.cash[3], 0)} € / ha</b>.
                                 </ExplanationText>
                                 <ExplanationText>
                                   Metsän arvo jatkuvapeitteisellä
                                   metsänkäsittelyllä on{" "}
-                                  <b>{_.round(chartVals.cash[2], 0)} € / ha </b>
+                                  <b>{_.round(chartVals.cash[2], 0)} € / ha</b>.
                                 </ExplanationText>
                                 <ExplanationText>
-                                  Puun myynnin lisäksi metsä voi tuottaa myös
-                                  muita taloudellisia hyötyjä.
+                                  Jatkuvapeitteinen metsänkäsittely antaa
+                                  tyypillisesti tasaisemman tuoton kuin
+                                  jaksollinen. Puun myynnin lisäksi metsä voi
+                                  tuottaa myös muita taloudellisia hyötyjä.
                                   {/* Katso tästä esimerkki. */}
                                 </ExplanationText>
                               </ExplanationContainer>
