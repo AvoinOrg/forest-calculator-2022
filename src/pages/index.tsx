@@ -3,6 +3,7 @@ import { useState } from "react";
 import AutoSuggest from "react-autosuggest";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 
 import { Theme } from "../styles";
 import muns from "../public/kunnat_index.json";
@@ -160,7 +161,12 @@ const Home = () => {
                 <InfoText>
                   Syötä laskuriin kiinteistötunnus ja saat tietoa metsäsi eri
                   käsittelytapojen vaikutuksista vesistöihin, kannattavuuteen,
-                  ilmastoon ja luonnon monimuotoisuuteen.
+                  ilmastoon ja luonnon monimuotoisuuteen. Voit kokeilla laskuria
+                  esimerkiksi turvemaakohteella{" "}
+                  <Link href={"/kiinteisto/694-403-4-186"}>
+                    <a>694-403-4-186</a>
+                  </Link>
+                  .
                 </InfoText>
               </InfoTextRow>
             </InfoTextContainer>
@@ -358,7 +364,7 @@ const InfoTextBorder: any = styled.div`
 const InfoText: any = styled.span`
   color: ${Theme.color.white};
   font-family: ${Theme.font.primary};
-  display: flex;
+  display: span;
   font-size: 1.15rem;
 
   font-weight: 300;
