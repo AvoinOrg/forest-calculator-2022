@@ -612,22 +612,32 @@ const Boiler = (props: Props) => {
                                   ilmastonmuutosta.
                                 </ExplanationText>
                                 <ExplanationText>
-                                  Jaksollisella metsänkäsittelyllä hiilivarasto
-                                  on seuraavan 50 vuoden aikana keskimäärin{" "}
-                                  <b>
-                                    {_.round(_.mean(chartVals.carbon[3]), 1)}{" "}
-                                    tonnia
-                                  </b>{" "}
-                                  hiiltä
-                                </ExplanationText>
-                                <ExplanationText>
-                                  Jatkuvapeitteisellä metsänkäsittelyllä
-                                  keskimäärin{" "}
-                                  <b>
-                                    {_.round(_.mean(chartVals.carbon[2]), 1)}{" "}
-                                    tonnia
-                                  </b>{" "}
-                                  hiiltä.
+                                  Tällä kiinteistöllä seuraavan 50 vuoden aikana
+                                  hiilivarasto on{" "}
+                                  <ExplanationUl>
+                                    <li>
+                                      jaksollisella metsänkäsittelyllä
+                                      keskimäärin{" "}
+                                      <b>
+                                        {_.round(
+                                          _.mean(chartVals.carbon[3]),
+                                          1
+                                        )}{" "}
+                                        tonnia hiiltä
+                                      </b>{" "}
+                                    </li>
+                                    <li>
+                                      jatkuvapeitteisellä metsänkäsittelyllä
+                                      keskimäärin{" "}
+                                      <b>
+                                        {_.round(
+                                          _.mean(chartVals.carbon[2]),
+                                          1
+                                        )}{" "}
+                                        tonnia hiiltä.
+                                      </b>
+                                    </li>
+                                  </ExplanationUl>
                                 </ExplanationText>
                                 <ExplanationText>
                                   Jatkuvapeitteisen metsänkäsittelyn
@@ -1224,6 +1234,10 @@ const ExplanationText: any = styled.p`
   color: ${Theme.color.primary};
   font-size: 1.1rem;
   margin: 8px 0 0 0;
+`;
+
+const ExplanationUl: any = styled.ul`
+  margin: 0 0 0 0;
 `;
 
 const ExplanationInfoRow: any = styled.div`
