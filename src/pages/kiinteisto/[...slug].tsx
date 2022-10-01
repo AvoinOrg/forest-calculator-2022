@@ -2,7 +2,7 @@ import fetch from "isomorphic-unfetch";
 import Head from "next/head";
 import Boiler from "../../components/Boiler";
 import NotFound from "../../components/NotFound";
-import { forestryIndexes, subPages } from "../../utils";
+import { subPages } from "../../utils";
 
 const FORESTRIES = ["forestry_2", "forestry_3"];
 
@@ -22,7 +22,7 @@ const Estate = (props) => {
           redirect={props.redirect}
         />
       ) : (
-        <NotFound text="Kiinteistötunnusta" id={props.id} />
+        <NotFound id={props.id} status={props.status} />
       )}
     </>
   );
@@ -192,6 +192,7 @@ export const getServerSideProps = async (req) => {
       id,
       type: "estate",
       redirect,
+      status: res.status,
     },
   };
 

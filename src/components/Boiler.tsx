@@ -15,7 +15,6 @@ import {
   subPages,
   radioVals,
   roundVal,
-  getRatio,
   addThousandSpaces,
 } from "../utils";
 
@@ -271,7 +270,7 @@ const Boiler = (props: Props) => {
                               data={chartVals.nitrogen}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
                               xNames={["10v", "20v", "30v", "40v", "50v"]}
-                              unit={"t"}
+                              unit={"kg"}
                             />
                           </ChartContainerNarrow>
                           <ChartContainerNarrow>
@@ -280,7 +279,7 @@ const Boiler = (props: Props) => {
                               data={chartVals.phosphorus}
                               colNames={["Jaksollinen", "Jatkuvapeitteinen"]}
                               xNames={["10v", "20v", "30v", "40v", "50v"]}
-                              unit={"t"}
+                              unit={"kg"}
                             />
                           </ChartContainerNarrow>
                         </BalanceRow>
@@ -422,7 +421,7 @@ const Boiler = (props: Props) => {
                         </ForestryDropdownSelected>
                         <ForestryDropdownItems isOpen={isDropdownOpen}>
                           {props.subPage !== "vesistovaikutukset" && (
-                            <Link href={root + props.id}>
+                            <Link href="/[root]/[id]" as={root + props.id}>
                               <ForestryLink
                                 onClick={(e) => {
                                   setisDropdownOpen(false);
@@ -472,7 +471,7 @@ const Boiler = (props: Props) => {
                                   setisDropdownOpen(false);
                                 }}
                               >
-                                Hiililaskelma
+                                Metsäsuunnitelma
                               </ForestryLink>
                             </Link>
                           )}
@@ -495,12 +494,12 @@ const Boiler = (props: Props) => {
                                   kiinteistöllä 50 vuoden aikana{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.nitrogen[3]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   typpikuormituksen ja{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.phosphorus[3]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   fosforikuormituksen.
                                 </ExplanationText>
@@ -509,12 +508,12 @@ const Boiler = (props: Props) => {
                                   tällä kiinteistöllä 50 vuoden aikana{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.nitrogen[2]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   typpikuormituksen ja{" "}
                                   <b>
                                     {_.round(_.sum(chartVals.phosphorus[2]), 2)}{" "}
-                                    tonnin{" "}
+                                    kilogramman{" "}
                                   </b>{" "}
                                   fosforikuormituksen.
                                 </ExplanationText>
@@ -527,7 +526,7 @@ const Boiler = (props: Props) => {
                                         _.sum(chartVals.nitrogen[2]),
                                       2
                                     )}{" "}
-                                    t (
+                                    kg (
                                     {_.round(
                                       ((_.sum(chartVals.nitrogen[3]) -
                                         _.sum(chartVals.nitrogen[2])) /
@@ -544,7 +543,7 @@ const Boiler = (props: Props) => {
                                         _.sum(chartVals.phosphorus[2]),
                                       2
                                     )}{" "}
-                                    t (
+                                    kg (
                                     {_.round(
                                       ((_.sum(chartVals.phosphorus[3]) -
                                         _.sum(chartVals.phosphorus[2])) /
@@ -554,7 +553,12 @@ const Boiler = (props: Props) => {
                                     )}{" "}
                                     %){" "}
                                   </b>
-                                  vähemmän kuin jaksollinen
+                                  vähemmän kuin jaksollinen.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jos vähenemä on typen osalta yli 10 kg/ha/50
+                                  vuotta, voit olla oikeutettu subventoituun
+                                  metsäsuunnitelmaan.
                                 </ExplanationText>
                               </ExplanationContainer>
                             </>
@@ -566,10 +570,16 @@ const Boiler = (props: Props) => {
                                 <ExplanationText>
                                   Metsänomistamisen kannattavuutta kuvaa
                                   parhaiten nettotulojen nykyarvo. Se sisältää
-                                  kaikki metsänhoidon kulut ja puun myynnin
-                                  tulot nykypäivän arvossa. Nykyarvon
-                                  laskennassa on käytetty 3 prosentin
-                                  laskennallista korkokantaa.
+                                  kaikki tulevat metsänhoidon kulut ja puun
+                                  myynnin tulot nykypäivän arvossa. Nettotulojen
+                                  nykyarvo kuvaa metsän arvoa tästä hetkestä
+                                  ikuisuuteen. Mitä kauempana tulevaisuudessa
+                                  tulo tapahtuu, sitä pienempi sen arvo on nyt.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jatkuvapeitteinen metsänkäsittely antaa
+                                  tyypillisesti tasaisemman tuoton kuin
+                                  jaksollinen.
                                 </ExplanationText>
                                 <ExplanationText>
                                   Metsän arvo jaksollisella metsänkäsittelyllä
@@ -612,13 +622,12 @@ const Boiler = (props: Props) => {
                                 </ExplanationText>
                                 <ExplanationText>
                                   Jatkuvapeitteisellä metsänkäsittelyllä
-                                  hiilivarasto on seuraavan 50 vuoden aikana
                                   keskimäärin{" "}
                                   <b>
                                     {_.round(_.mean(chartVals.carbon[2]), 1)}{" "}
                                     tonnia
                                   </b>{" "}
-                                  hiiltä
+                                  hiiltä.
                                 </ExplanationText>
                                 <ExplanationText>
                                   Jatkuvapeitteisen metsänkäsittelyn
@@ -651,6 +660,14 @@ const Boiler = (props: Props) => {
                                   </b>{" "}
                                   keskivertosuomalaisen ilmastopäästöjä 50
                                   vuoden aikana.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Jos luku on negatiivinen, hiilivarasto on
+                                  jaksollisella metsänkäsittelyllä suurempi.
+                                </ExplanationText>
+                                <ExplanationText>
+                                  Hiilivaraston laskennassa huomioidaan puuston
+                                  ja maaperän sisältämä hiili.
                                 </ExplanationText>
                               </ExplanationContainer>
                             </>
@@ -738,6 +755,11 @@ const Boiler = (props: Props) => {
                                   </a>
                                 </li>
                               </ul>
+                            </ExplanationText>
+                            <ExplanationText>
+                              Jos jatkuvapeitteinen metsänkäsittely vähentäisi
+                              selvästi vesistövaikutuksia sinun kiinteistölläsi,
+                              voit saada metsäsuunnitelman puoleen hintaan.
                             </ExplanationText>
                             <ArrowRow>
                               <ArrowBack onClick={handleArrowBackClick}>

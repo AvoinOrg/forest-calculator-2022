@@ -80,19 +80,25 @@ const formatData = (data, forestryData) => {
   let forestArea = 0;
 
   for (const i in forestryData) {
-    const area = Number(forestryData[i].area);
-    forestArea += Number(area);
+    if (forestryData[i].area !== null) {
+      const area = Number(forestryData[i].area);
+      forestArea += Number(area);
 
-    for (const j in FORESTRIES) {
-      const f = forestryData[i][FORESTRIES[j]];
-      const new_f = { area: area };
+      for (const j in FORESTRIES) {
+        const f = forestryData[i][FORESTRIES[j]];
+        const new_f = { area: area };
 
-      for (const k in COLS) {
-        new_f[COLS[k]] = f[COLS[k]];
+        for (const k in COLS) {
+          new_f[COLS[k]] = f[COLS[k]];
+        }
+
+        data_formatted[FORESTRIES[j]].push(new_f);
       }
-
-      data_formatted[FORESTRIES[j]].push(new_f);
     }
+  }
+
+  if (forestArea === 0) {
+    return null;
   }
 
   data_formatted["forest_area"] = forestArea;
@@ -150,6 +156,9 @@ const getEstate = async (id) => {
 
     if (res[0].rows.length > 0) {
       const data = formatData(res[1].rows, res[0].rows);
+      if (data === null) {
+        return parseRes(204, null);
+      }
       return parseRes(200, data);
     } else {
       return parseRes(404, null);

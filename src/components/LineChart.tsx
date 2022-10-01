@@ -29,6 +29,7 @@ const getOptions = (data, colNames, xNames, unit): Highcharts.Options => {
           opacity: 0.6,
         },
       },
+      min: 0,
       gridLineColor: "rgba(221, 207, 162, 0.3)",
       lineColor: Theme.color.white,
       labels: {
