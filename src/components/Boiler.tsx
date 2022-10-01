@@ -768,17 +768,23 @@ const Boiler = (props: Props) => {
                               selvästi vesistövaikutuksia sinun kiinteistölläsi,
                               voit saada metsäsuunnitelman puoleen hintaan.
                             </ExplanationText>
-                            <ArrowRow>
-                              <ArrowBack onClick={handleArrowBackClick}>
-                                <ArrowBackPoint />
-                                <ArrowBackTail>
-                                  {/* <ArrowText>
+                            <ExplanationText>
+                              <a href="https://jatkuvakasvatus.fi/metsalaskuri">
+                                Lisätietoa laskurista täältä.
+                              </a>
+                            </ExplanationText>
+                          </ExplanationContainer>
+                          <ArrowRow>
+                            <ArrowBack onClick={handleArrowBackClick}>
+                              <ArrowBackPoint />
+                              <ArrowBackTail>
+                                {/* <ArrowText>
                               &nbsp;&nbsp;
                               </ArrowText> */}
-                                </ArrowBackTail>
-                              </ArrowBack>
-                            </ArrowRow>
-                            {/* <PayInfoCol>
+                              </ArrowBackTail>
+                            </ArrowBack>
+                          </ArrowRow>
+                          {/* <PayInfoCol>
                               <PayInfoRow>
                                 <PayInfoRadio
                                   type="radio"
@@ -836,7 +842,7 @@ const Boiler = (props: Props) => {
                                 )}
                               </PayInfoRow>
                             </PayInfoCol> */}
-                          </ExplanationContainer>
+
                           {/* <Form>
                             <FormLabel>Sähköpostiosoite</FormLabel>
                             <FormInput
