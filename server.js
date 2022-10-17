@@ -12,7 +12,7 @@ const { getEstate, sendOrder } = require("./data/data.js");
 require("dotenv").config();
 
 const dev = process.env.NODE_ENV !== "production";
-const useHttps = process.env.HTTPS === "TRUE";
+const useHttps = process.env.USE_HTTPS === "true";
 const port = 3000;
 const httpsPort = 3001;
 const app = next({ dev });
