@@ -11,7 +11,7 @@ services:
       - "${NODE_PORT_HTTPS}:3001"
     volumes:
       - .:/home/node/app:z
-      - /etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem:/etc/letsencrypt/live/${DOMAIN_NAME}/fullchain.pem
+      - /etc/letsencrypt/live/${DOMAIN_NAME}/cert.pem:/etc/letsencrypt/live/${DOMAIN_NAME}/cert.pem
       - /etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem:/etc/letsencrypt/live/${DOMAIN_NAME}/privkey.pem
       - /etc/letsencrypt/live/${DOMAIN_NAME}/chain.pem:/etc/letsencrypt/live/${DOMAIN_NAME}/chain.pem
     restart: unless-stopped
