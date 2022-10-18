@@ -176,7 +176,7 @@ export const getServerSideProps = async (req) => {
   }
 
   // const res = await fetch(process.env.API_URL + "/estate/" + id);
-  const res = await fetch("http://localhost:3000/api" + "/estate/" + id);
+  const res = await fetch("https://localhost:3001/api" + "/estate/" + id);
 
   let data = null;
 
