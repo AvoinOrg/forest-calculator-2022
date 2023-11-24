@@ -758,11 +758,6 @@ const Boiler = (props: Props) => {
                               <ForestryLogoRow></ForestryLogoRow>
                             </ForestryLogoContainer>
                             <ExplanationText>
-                              Jos jatkuvapeitteinen metsänkäsittely vähentäisi
-                              selvästi vesistövaikutuksia sinun kiinteistölläsi,
-                              voit saada metsäsuunnitelman puoleen hintaan.
-                            </ExplanationText>
-                            <ExplanationText>
                               <a href="https://jatkuvakasvatus.fi/metsalaskuri">
                                 Lisätietoa laskurista täältä.
                               </a>
