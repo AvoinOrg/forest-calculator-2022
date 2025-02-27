@@ -125,7 +125,7 @@ const getEstate = async (id) => {
     const res = await Promise.all([
       pool.query(
         ` 
-        SELECT f.area, f.forestry_1, f.forestry_2, f.forestry_3, 
+        SELECT DISTINCT f.area, f.forestry_1, f.forestry_2, f.forestry_3, 
           f.forestry_4
         FROM 
             (SELECT 
